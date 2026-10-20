@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Mémo PTZ télépros</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='420 100 880 700'%3E%3Crect x='420' y='100' width='880' height='700' rx='120' fill='%231C325B'/%3E%3Cpath d='M499 680 V168 H752' fill='none' stroke='%232AABE3' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg stroke='%23fff' stroke-width='150' stroke-linecap='round'%3E%3Cline x1='897' y1='248' x2='640' y2='710'/%3E%3Cline x1='1008' y1='472' x2='870' y2='710'/%3E%3C/g%3E%3Ccircle cx='1108' cy='312' r='80' fill='%232AABE3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef2f8; --surface:#ffffff; --surface-2:#f4f7fb; --border:#dbe3ee;
+    --ink:#15233f; --ink-muted:#56688a; --ink-faint:#8796b0;
+    --navy:#1C325B; --accent:#2AABE3; --accent-ink:#0f6e98; --accent-soft:rgba(42,171,227,.13);
+    --good:#1f9d6f; --good-soft:rgba(31,157,111,.13); --good-ink:#0f7a55;
+    --warn:#c1740f; --warn-soft:rgba(193,116,15,.14); --warn-ink:#8f5606;
+    --bad:#c2604a; --bad-soft:rgba(194,96,74,.14); --bad-ink:#9c4934;
+    --font-ui:'Montserrat',Arial,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1322; --surface:#121e31; --surface-2:#18273c; --border:#24354d;
+      --ink:#e7edf5; --ink-muted:#94a4ba; --ink-faint:#647289;
+      --navy:#e7edf5; --accent:#57c2f2; --accent-ink:#bfe9fc; --accent-soft:rgba(87,194,242,.14);
+      --good:#34d399; --good-soft:rgba(52,211,153,.15); --good-ink:#8ff0cb;
+      --warn:#f5a623; --warn-soft:rgba(245,166,35,.16); --warn-ink:#ffd28a;
+      --bad:#e2957c; --bad-soft:rgba(226,149,124,.16); --bad-ink:#ffcdb8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1322; --surface:#121e31; --surface-2:#18273c; --border:#24354d;
+    --ink:#e7edf5; --ink-muted:#94a4ba; --ink-faint:#647289;
+    --navy:#e7edf5; --accent:#57c2f2; --accent-ink:#bfe9fc; --accent-soft:rgba(87,194,242,.14);
+    --good:#34d399; --good-soft:rgba(52,211,153,.15); --good-ink:#8ff0cb;
+    --warn:#f5a623; --warn-soft:rgba(245,166,35,.16); --warn-ink:#ffd28a;
+    --bad:#e2957c; --bad-soft:rgba(226,149,124,.16); --bad-ink:#ffcdb8;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; scroll-padding-top:70px; }
+  body{ font-family:var(--font-ui); background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.55; }
+  .mono{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+
+  .header{ background:linear-gradient(150deg,#1C325B 0%,#264574 100%); padding:14px 22px; box-shadow:0 4px 20px rgba(10,18,32,.35); }
+  .header-row{ max-width:860px; margin:0 auto; display:flex; align-items:center; gap:12px; }
+  .header-logo{ height:34px; width:auto; flex-shrink:0; }
+  .header-divider{ width:1px; height:26px; background:rgba(255,255,255,.18); }
+  .header-title{ font-size:15px; font-weight:800; color:#fff; }
+  .header-sub{ font-size:11px; color:#9fdcf6; font-weight:600; margin-top:2px; }
+  .header-nav{ margin-left:auto; display:flex; gap:6px; }
+  .header-nav a{ color:rgba(255,255,255,.75); text-decoration:none; font-size:12px; font-weight:700; padding:7px 13px; border-radius:30px; border:1px solid rgba(255,255,255,.18); white-space:nowrap; }
+  .header-nav a:hover{ color:#fff; border-color:#2AABE3; }
+  .header-nav a[aria-current="page"]{ background:#2AABE3; border-color:#2AABE3; color:#fff; }
+  @media (max-width:560px){ .header-row{ flex-wrap:wrap; } .header-nav{ margin-left:0; width:100%; } .header-divider{ display:none; } }
+
+  .toc{ position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--border); }
+  .toc-row{ max-width:860px; margin:0 auto; padding:10px 16px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; }
+  .toc a{ flex:none; font-size:12px; font-weight:700; color:var(--ink-muted); text-decoration:none; padding:6px 12px; border-radius:30px; background:var(--surface); border:1px solid var(--border); }
+  .toc a:hover{ color:var(--accent-ink); border-color:var(--accent); }
+
+  main{ max-width:860px; margin:0 auto; padding:20px 16px 60px; display:flex; flex-direction:column; gap:16px; }
+  section{ background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px; }
+  h2{ font-size:17px; font-weight:800; color:var(--navy); margin-bottom:4px; }
+  .lead{ color:var(--ink-muted); font-size:13px; margin-bottom:16px; }
+  h3{ font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--ink-muted); margin:20px 0 10px; }
+  p + p{ margin-top:8px; }
+  b{ font-weight:700; }
+
+  .checks{ list-style:none; display:flex; flex-direction:column; gap:10px; counter-reset:c; }
+  .checks li{ display:grid; grid-template-columns:28px 1fr; gap:10px; counter-increment:c; }
+  .checks li::before{ content:counter(c); width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .checks .q{ font-weight:700; }
+  .checks .a{ color:var(--ink-muted); font-size:13px; }
+
+  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  @media (max-width:640px){ .steps{ grid-template-columns:1fr 1fr; } }
+  .step{ background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:12px; }
+  .step-n{ font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--accent-ink); }
+  .step-t{ font-weight:700; font-size:13px; margin-top:3px; }
+  .step-d{ font-size:12px; color:var(--ink-muted); margin-top:4px; }
+
+  .example{ margin-top:14px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:8px; padding:12px 14px; font-size:13px; }
+
+  .tbl-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; }
+  table{ border-collapse:collapse; width:100%; font-size:13px; }
+  th, td{ padding:8px 12px; text-align:right; border-bottom:1px solid var(--border); white-space:nowrap; }
+  th{ background:var(--surface-2); font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--ink-muted); font-weight:700; }
+  th:first-child, td:first-child{ text-align:left; }
+  tr:last-child td{ border-bottom:none; }
+  td{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+  td:first-child{ font-family:var(--font-ui); font-weight:600; }
+  .note{ font-size:12px; color:var(--ink-faint); margin-top:8px; }
+
+  .say{ display:flex; flex-direction:column; gap:10px; }
+  .say-item{ border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+  .say-when{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--accent-ink); }
+  .say-text{ margin-top:4px; font-size:14px; }
+  .say-text::before{ content:'« '; color:var(--ink-faint); }
+  .say-text::after{ content:' »'; color:var(--ink-faint); }
+
+  .lights{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:640px){ .lights{ grid-template-columns:1fr; } }
+  .light{ border-radius:12px; padding:12px 14px; border:1px solid var(--border); }
+  .light-t{ font-weight:800; font-size:14px; }
+  .light-d{ font-size:12.5px; color:var(--ink-muted); margin-top:4px; }
+  .light-a{ font-size:12.5px; font-weight:700; margin-top:6px; }
+  .l-green{ background:var(--good-soft); } .l-green .light-t, .l-green .light-a{ color:var(--good-ink); }
+  .l-orange{ background:var(--warn-soft); } .l-orange .light-t, .l-orange .light-a{ color:var(--warn-ink); }
+  .l-red{ background:var(--bad-soft); } .l-red .light-t, .l-red .light-a{ color:var(--bad-ink); }
+  .l-neg{ background:var(--surface-2); } .l-neg .light-t, .l-neg .light-a{ color:var(--bad-ink); }
+
+  ul.plain{ padding-left:18px; display:flex; flex-direction:column; gap:6px; }
+  ul.plain li::marker{ color:var(--accent); }
+  .warn-box{ margin-top:14px; background:var(--warn-soft); color:var(--warn-ink); border-radius:10px; padding:11px 14px; font-size:13px; font-weight:600; }
+  footer{ max-width:860px; margin:0 auto; padding:0 16px 40px; font-size:11.5px; color:var(--ink-faint); }
+  a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  @media print{ .toc, .header-nav{ display:none; } section{ break-inside:avoid; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-row">
+    <svg class="header-logo" viewBox="470 140 770 625" aria-label="Solution Neuf" role="img"><defs><clipPath id="c-sym"><rect x="400" y="100" width="900" height="648"/></clipPath></defs>
+      <path d="M499 680 V168 H752" fill="none" stroke="#2AABE3" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+      <g clip-path="url(#c-sym)" stroke="#fff"><line x1="897.0" y1="248.0" x2="596.8" y2="788.0" stroke-width="159" stroke-linecap="round"/><line x1="1008.7" y1="472.5" x2="833.3" y2="788.0" stroke-width="159" stroke-linecap="round"/><line x1="1137.6" y1="661.5" x2="1067.3" y2="788.0" stroke-width="159" stroke-linecap="round"/></g>
+      <circle cx="1108" cy="312" r="80" fill="#2AABE3"/></svg>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Mémo PTZ · Neuf résidence principale</div>
+      <div class="header-sub">Outil interne télépros · Solution Neuf</div>
+    </div>
+    <nav class="header-nav" aria-label="Pages de l'outil">
+      <a href="index.html">🧮 Simulateur</a>
+      <a href="memo.html" aria-current="page">📘 Mémo PTZ</a>
+    </nav>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sommaire">
+  <div class="toc-row">
+    <a href="#verifier">5 vérifications</a>
+    <a href="#calcul">Calcul du PTZ</a>
+    <a href="#baremes">Barèmes</a>
+    <a href="#dire">Au téléphone</a>
+    <a href="#voyant">Lire le voyant</a>
+    <a href="#rouge">Dossier rouge</a>
+    <a href="#pieces">Pièces</a>
+  </div>
+</nav>
+
+<main>
+
+  <section id="verifier">
+    <h2>Les 5 vérifications PTZ pendant l'appel</h2>
+    <p class="lead">Dans cet ordre. Si l'une bloque, le prospect peut quand même acheter, mais sans PTZ.</p>
+    <ol class="checks">
+      <li><div><div class="q">Achète-t-il sa résidence principale ?</div><div class="a">Il doit y habiter au moins 8 mois par an pendant 6 ans. Pas d'investissement locatif ni de résidence secondaire.</div></div></li>
+      <li><div><div class="q">Est-il primo-accédant ?</div><div class="a">Ni lui ni les futurs occupants n'ont été propriétaires de leur résidence principale ces 2 dernières années. Exceptions : carte mobilité inclusion « invalidité », pension d'invalidité, AAH ou AEEH, logement rendu inhabitable par une catastrophe, ou simple usufruit / nue-propriété.</div></div></li>
+      <li><div><div class="q">Dans quelle zone se trouve le bien ?</div><div class="a">A / A bis, B1, B2 ou C : indiquée sur la fiche du programme. Depuis avril 2025, toutes les zones sont éligibles en neuf, appartement comme maison.</div></div></li>
+      <li><div><div class="q">Combien de personnes habiteront le logement ?</div><div class="a">Adultes + enfants + personnes à charge. Ce nombre fixe les plafonds, pas le nombre d'emprunteurs.</div></div></li>
+      <li><div><div class="q">Quel est son revenu fiscal de référence (RFR) <span id="anneeRfr"></span> ?</div><div class="a">Ligne « Revenu fiscal de référence » de l'avis d'imposition <span id="anneeAvis"></span>. Si les futurs occupants ont des avis séparés, on additionne. Ce n'est <b>pas</b> le salaire net actuel.</div></div></li>
+    </ol>
+  </section>
+
+  <section id="calcul">
+    <h2>Comment se calcule le PTZ</h2>
+    <p class="lead">Le simulateur fait tout le calcul ; ceci sert à l'expliquer au prospect.</p>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><div class="step-t">Plafond de ressources</div><div class="step-d">RFR ≤ plafond de la zone pour le nombre d'occupants, sinon pas de PTZ.</div></div>
+      <div class="step"><div class="step-n">02</div><div class="step-t">Tranche</div><div class="step-d">(le plus élevé entre RFR et prix ÷ 9) ÷ coefficient familial → tranche 1 à 4.</div></div>
+      <div class="step"><div class="step-n">03</div><div class="step-t">Base retenue</div><div class="step-d">Prix du bien, plafonné selon la zone et le nombre d'occupants.</div></div>
+      <div class="step"><div class="step-n">04</div><div class="step-t">Montant</div><div class="step-d">Base × quotité de la tranche (plus faible en maison qu'en appartement).</div></div>
+    </div>
+    <div class="example"><b>Exemple :</b> couple + 1 enfant (3 pers.), appartement à 240 000 € en zone B1, RFR 45 000 €.<br>
+      45 000 ÷ 1,8 = 25 000 € → tranche 2 (quotité 40 %). Base : 240 000 € (plafond 243 000 €).<br>
+      PTZ = <b>96 000 €</b>, rien à rembourser pendant 8 ans, puis 667 €/mois pendant 12 ans.</div>
+  </section>
+
+  <section id="baremes">
+    <h2>Barèmes en vigueur</h2>
+    <p class="lead">Logement neuf, offres de prêt émises depuis le 1er avril 2025, reconduites en 2026. Dispositif prolongé jusqu'au 31/12/2027.</p>
+    <h3>Plafonds de ressources (RFR N-2)</h3>
+    <div class="tbl-wrap"><table id="tRessources"></table></div>
+    <h3>Tranches : revenu retenu ÷ coefficient familial</h3>
+    <div class="tbl-wrap"><table id="tTranches"></table></div>
+    <p class="note" id="coefNote"></p>
+    <h3>Quotité et remboursement par tranche</h3>
+    <div class="tbl-wrap"><table id="tQuotite"></table></div>
+    <h3>Plafond du coût de l'opération pris en compte</h3>
+    <div class="tbl-wrap"><table id="tOperation"></table></div>
+    <p class="note">Le PTZ ne peut pas dépasser le montant du prêt bancaire (1,25 fois en tranche 1) : avec un gros apport, il est réduit. Le simulateur l'applique automatiquement.</p>
+  </section>
+
+  <section id="dire">
+    <h2>Au téléphone : les phrases clés</h2>
+    <p class="lead">À adapter, mais sans jamais promettre un montant ferme.</p>
+    <div class="say">
+      <div class="say-item"><div class="say-when">Pour obtenir le RFR</div><div class="say-text">Avez-vous votre dernier avis d'imposition sous la main ? J'ai besoin du montant écrit sur la ligne « revenu fiscal de référence », c'est lui qui détermine le prêt à taux zéro, pas votre salaire.</div></div>
+      <div class="say-item"><div class="say-when">Pour présenter le PTZ</div><div class="say-text">Le PTZ, c'est un prêt sans intérêt. Ce n'est pas une aide gratuite : vous le remboursez, mais seulement après plusieurs années de différé, et sans frais.</div></div>
+      <div class="say-item"><div class="say-when">Pour le différé</div><div class="say-text">Pendant X ans, vous ne remboursez rien sur le PTZ. Ensuite il faudra compter environ Y € par mois. Votre banque peut lisser les deux prêts pour garder une mensualité stable.</div></div>
+      <div class="say-item"><div class="say-when">Tranche 4 (pas de différé)</div><div class="say-text">Dans votre situation, le PTZ se rembourse dès le départ, sur 10 ans, toujours sans intérêt.</div></div>
+      <div class="say-item"><div class="say-when">Pour le loyer</div><div class="say-text">Aujourd'hui vous payez X € de loyer. Avec ce projet, votre mensualité serait d'environ Y € : vous devenez propriétaire pour Z € de plus (ou de moins) par mois.</div></div>
+      <div class="say-item"><div class="say-when">Pour conclure sur un dossier vert ou orange</div><div class="say-text">Votre projet tient la route. Pour monter le dossier avec la banque, je vous envoie maintenant par email la liste des documents à nous retourner.</div></div>
+    </div>
+  </section>
+
+  <section id="voyant">
+    <h2>Lire le voyant du simulateur</h2>
+    <p class="lead">Limite d'endettement : 35 % des revenus, assurance comprise (règle HCSF). Le loyer actuel n'est pas compté : il disparaît après l'achat.</p>
+    <div class="lights">
+      <div class="light l-green"><div class="light-t">🟢 Vert : finançable</div><div class="light-d">35 % ou moins, même quand le PTZ commence à se rembourser. Reste à vivre suffisant.</div><div class="light-a">→ Demander les pièces.</div></div>
+      <div class="light l-orange"><div class="light-t">🟠 Orange : sous réserve</div><div class="light-d">Tient seulement si la banque lisse prêt + PTZ, ou reste à vivre un peu juste.</div><div class="light-a">→ Demander les pièces, signaler les points de vigilance en notes.</div></div>
+      <div class="light l-red"><div class="light-t">🔴 Rouge : à retravailler</div><div class="light-d">Au-delà de 35 % même en lissant. Écart rattrapable.</div><div class="light-a">→ Pas de pièces. Explorer les leviers (panneau à droite).</div></div>
+      <div class="light l-neg"><div class="light-t">🔴 Négatif : non finançable</div><div class="light-d">Capacité inférieure à 80 % du prix, ou crédits en cours déjà à 35 %.</div><div class="light-a">→ Pas de pièces. Envoyer la fiche pour garder une trace.</div></div>
+    </div>
+    <p class="note">Reste à vivre indicatif : 800 € par adulte + 300 € par enfant, après mensualités.</p>
+  </section>
+
+  <section id="rouge">
+    <h2>Dossier rouge : les leviers à tester</h2>
+    <p class="lead">Le simulateur affiche l'écart à combler. Modifiez les champs en direct pendant l'appel : le voyant se met à jour.</p>
+    <ul class="plain">
+      <li><b>Augmenter l'apport</b> : épargne non mentionnée, donation familiale, déblocage d'épargne salariale (possible pour l'achat de la résidence principale).</li>
+      <li><b>Négocier le prix</b> : remise promoteur, frais de notaire offerts, lot plus petit ou à un étage moins coté.</li>
+      <li><b>Revoir la zone ou le programme</b> : commune voisine moins chère, autre programme, appartement plutôt que maison (quotité PTZ plus forte).</li>
+      <li><b>Solder un petit crédit</b> (auto, conso) avec l'épargne : libère de la capacité d'emprunt.</li>
+    </ul>
+    <div class="warn-box">Ne jamais demander les pièces sur un dossier rouge : le bouton est bloqué, et le serveur refuse aussi l'envoi.</div>
+  </section>
+
+  <section id="pieces">
+    <h2>Les pièces demandées au prospect</h2>
+    <p class="lead">Envoyées par email depuis financement@solution-neuf.fr ; le prospect répond à ce mail avec les documents.</p>
+    <ul class="plain">
+      <li><b>2 derniers avis d'imposition</b>, toutes les pages, pour chaque emprunteur : ils confirment le RFR, donc le PTZ.</li>
+      <li><b>3 derniers bulletins de salaire</b>, pour chaque emprunteur (ou justificatif équivalent pour un indépendant ou un retraité).</li>
+      <li><b>Un relevé d'épargne</b> : il justifie l'apport.</li>
+    </ul>
+    <p class="note">Le bouton « Demander les pièces » n'apparaît qu'en vert ou orange, avec un email valide. Pensez à envoyer ensuite la fiche de synthèse : elle part à l'équipe, jamais au prospect.</p>
+  </section>
+</main>
+
+<footer>Simulation indicative : l'éligibilité au PTZ est confirmée par la banque sur justificatifs. Sources : CCH art. D31-10-3-1 et D31-10-9, ANIL, service-public.gouv.fr.</footer>
+
+<script src="assets/ptz-baremes.js"></script>
+<script>
+const eur = n => n.toLocaleString('fr-FR') + ' €';
+const Z = ['A', 'B1', 'B2', 'C'], ZL = { A:'A / A bis', B1:'B1', B2:'B2', C:'C' };
+const head = cols => '<tr>' + cols.map(c => `<th>${c}</th>`).join('') + '</tr>';
+const annee = new Date().getFullYear();
+document.getElementById('anneeRfr').textContent = annee - 2;
+document.getElementById('anneeAvis').textContent = (annee - 1) + ' (revenus ' + (annee - 2) + ')';
+
+document.getElementById('tRessources').innerHTML = head(['Occupants', ...Z.map(z => 'Zone ' + ZL[z])])
+  + PTZ.ressources.A.map((_, i) => `<tr><td>${i + 1}${i === 7 ? ' et +' : ''} pers.</td>${Z.map(z => `<td>${eur(PTZ.ressources[z][i])}</td>`).join('')}</tr>`).join('');
+
+document.getElementById('tTranches').innerHTML = head(['Tranche', ...Z.map(z => 'Zone ' + ZL[z])])
+  + [0, 1, 2, 3].map(t => `<tr><td>Tranche ${t + 1}</td>${Z.map(z => `<td>${t ? eur(PTZ.tranches[z][t - 1] + 1) + ' à ' : 'jusqu\'à '}${eur(PTZ.tranches[z][t])}</td>`).join('')}</tr>`).join('');
+document.getElementById('coefNote').textContent = 'Revenu retenu = le plus élevé entre le RFR et le prix ÷ 9. Coefficient familial : '
+  + PTZ.coef.map((c, i) => `${i + 1}${i === 7 ? '+' : ''} pers. ${String(c).replace('.', ',')}`).join(' · ') + '.';
+
+document.getElementById('tQuotite').innerHTML = head(['Tranche', 'Appartement', 'Maison', 'Différé', 'Puis remboursement', 'Durée totale'])
+  + PTZ.remboursement.map((r, t) => `<tr><td>Tranche ${t + 1}</td><td>${PTZ.quotite.appartement[t] * 100} %</td><td>${PTZ.quotite.maison[t] * 100} %</td><td>${r.differe ? r.differe + ' ans (0 €)' : 'aucun'}</td><td>${r.duree} ans</td><td>${r.differe + r.duree} ans</td></tr>`).join('');
+
+document.getElementById('tOperation').innerHTML = head(['Occupants', ...Z.map(z => 'Zone ' + ZL[z])])
+  + PTZ.operation.A.map((_, i) => `<tr><td>${i + 1}${i === 4 ? ' et +' : ''} pers.</td>${Z.map(z => `<td>${eur(PTZ.operation[z][i])}</td>`).join('')}</tr>`).join('');
+</script>
+</body>
+</html>

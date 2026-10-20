@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Qualification PTZ Solution Neuf</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='420 100 880 700'%3E%3Crect x='420' y='100' width='880' height='700' rx='120' fill='%231C325B'/%3E%3Cpath d='M499 680 V168 H752' fill='none' stroke='%232AABE3' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg stroke='%23fff' stroke-width='150' stroke-linecap='round'%3E%3Cline x1='897' y1='248' x2='640' y2='710'/%3E%3Cline x1='1008' y1='472' x2='870' y2='710'/%3E%3C/g%3E%3Ccircle cx='1108' cy='312' r='80' fill='%232AABE3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef2f8; --surface:#ffffff; --surface-2:#f4f7fb; --border:#dbe3ee;
+    --ink:#15233f; --ink-muted:#56688a; --ink-faint:#8796b0;
+    --navy:#1C325B; --navy-2:#264574; --accent:#2AABE3; --accent-ink:#0f6e98; --accent-soft:rgba(42,171,227,.13);
+    --good:#1f9d6f; --good-soft:rgba(31,157,111,.13); --good-ink:#0f7a55;
+    --warn:#c1740f; --warn-soft:rgba(193,116,15,.14); --warn-ink:#8f5606;
+    --bad:#c2604a; --bad-soft:rgba(194,96,74,.14); --bad-ink:#9c4934;
+    --shadow-sm:0 1px 2px rgba(20,30,50,.06), 0 1px 1px rgba(20,30,50,.04);
+    --shadow-lg:0 12px 32px rgba(20,30,50,.16);
+    --radius:14px; --radius-sm:9px; --radius-lg:20px;
+    --font-ui:'Montserrat',Arial,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0b1322; --surface:#121e31; --surface-2:#18273c; --border:#24354d;
+      --ink:#e7edf5; --ink-muted:#94a4ba; --ink-faint:#647289;
+      --navy:#172a4c; --navy-2:#24426f; --accent:#57c2f2; --accent-ink:#bfe9fc; --accent-soft:rgba(87,194,242,.14);
+      --good:#34d399; --good-soft:rgba(52,211,153,.15); --good-ink:#8ff0cb;
+      --warn:#f5a623; --warn-soft:rgba(245,166,35,.16); --warn-ink:#ffd28a;
+      --bad:#e2957c; --bad-soft:rgba(226,149,124,.16); --bad-ink:#ffcdb8;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.35); --shadow-lg:0 16px 36px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b1322; --surface:#121e31; --surface-2:#18273c; --border:#24354d;
+    --ink:#e7edf5; --ink-muted:#94a4ba; --ink-faint:#647289;
+    --navy:#172a4c; --navy-2:#24426f; --accent:#57c2f2; --accent-ink:#bfe9fc; --accent-soft:rgba(87,194,242,.14);
+    --good:#34d399; --good-soft:rgba(52,211,153,.15); --good-ink:#8ff0cb;
+    --warn:#f5a623; --warn-soft:rgba(245,166,35,.16); --warn-ink:#ffd28a;
+    --bad:#e2957c; --bad-soft:rgba(226,149,124,.16); --bad-ink:#ffcdb8;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35); --shadow-lg:0 16px 36px rgba(0,0,0,.5);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:var(--font-ui); background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.45; }
+  ::selection{ background:var(--accent-soft); }
+  .mono{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+  .hidden{ display:none !important; }
+
+  /* ── HEADER ── */
+  .header{ background:linear-gradient(150deg,var(--navy) 0%,var(--navy-2) 100%); padding:14px 22px; box-shadow:0 4px 20px rgba(10,18,32,.35); }
+  .header-row{ max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; }
+  .header-logo{ height:34px; width:auto; flex-shrink:0; }
+  .header-divider{ width:1px; height:26px; background:rgba(255,255,255,.18); }
+  .header-title{ font-size:15px; font-weight:800; color:#fff; letter-spacing:.3px; }
+  .header-sub{ font-size:11px; color:#9fdcf6; font-weight:600; margin-top:2px; }
+
+  .header-nav{ margin-left:auto; display:flex; gap:6px; }
+  .header-nav a{ color:rgba(255,255,255,.75); text-decoration:none; font-size:12px; font-weight:700; padding:7px 13px; border-radius:30px; border:1px solid rgba(255,255,255,.18); white-space:nowrap; }
+  .header-nav a:hover{ color:#fff; border-color:#2AABE3; }
+  .header-nav a[aria-current="page"]{ background:#2AABE3; border-color:#2AABE3; color:#fff; }
+  @media (max-width:560px){ .header-row{ flex-wrap:wrap; } .header-nav{ margin-left:0; width:100%; } .header-divider{ display:none; } }
+  .container{ max-width:760px; margin:0 auto; padding:20px 16px 130px; display:flex; flex-direction:column; gap:14px; }
+
+  /* ── LE VOYANT ── */
+  .signal{
+    background:linear-gradient(150deg,#1C325B 0%,#264574 100%);
+    border-radius:var(--radius-lg); padding:20px 22px 20px 19px; box-shadow:var(--shadow-lg);
+    position:sticky; top:10px; z-index:20; border-left:5px solid transparent; transition:border-color .35s ease;
+  }
+  .signal.s-neutral{ border-left-color:#2AABE3; }
+  .signal.s-red{ border-left-color:#e07a62; }
+  .signal.s-orange{ border-left-color:#f5a623; }
+  .signal.s-green{ border-left-color:#34d399; }
+  @keyframes signalPulse{ 0%{ transform:scale(1); } 35%{ transform:scale(1.01); } 100%{ transform:scale(1); } }
+  .signal.pulse{ animation:signalPulse .45s ease; }
+  .signal-top{ display:flex; align-items:center; gap:14px; }
+  .signal-dot{ width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .s-neutral .signal-dot{ background:#2AABE3; box-shadow:0 0 0 4px rgba(42,171,227,.25); }
+  .s-red .signal-dot{ background:#e07a62; box-shadow:0 0 0 4px rgba(224,122,98,.25); }
+  .s-orange .signal-dot{ background:#f5a623; box-shadow:0 0 0 4px rgba(245,166,35,.25); }
+  .s-green .signal-dot{ background:#34d399; box-shadow:0 0 0 4px rgba(52,211,153,.25); }
+  .signal-label{ font-size:9.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:rgba(255,255,255,.55); }
+  .signal-verdict{ font-size:18px; font-weight:800; color:#fff; margin-top:1px; text-wrap:balance; }
+  .signal-reasons{ margin-top:12px; display:flex; flex-direction:column; gap:5px; }
+  .signal-reason{ font-size:12px; color:rgba(255,255,255,.78); display:flex; gap:7px; align-items:baseline; }
+  .signal-reason::before{ content:'—'; color:rgba(255,255,255,.35); flex-shrink:0; }
+  .signal-stats{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.12); }
+  @media (max-width:520px){ .signal-stats{ grid-template-columns:1fr 1fr; } }
+  .signal-stat-val{ font-size:17px; font-weight:700; color:#fff; }
+  .signal-stat-lbl{ font-size:9.5px; font-weight:700; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.5px; margin-top:1px; }
+  .signal-stat-sub{ font-size:10.5px; color:rgba(255,255,255,.42); margin-top:2px; }
+  .signal-reopen{ margin-top:6px; font-size:11.5px; font-weight:700; color:rgba(255,255,255,.88); text-decoration:underline; cursor:pointer; background:none; border:none; font-family:var(--font-ui); padding:0; text-align:left; }
+
+  .pieces-cta{ margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,.14); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .pieces-cta-text{ font-size:12px; color:rgba(255,255,255,.78); line-height:1.4; }
+  .pieces-cta-text strong{ color:#fff; }
+  .btn-pieces{
+    display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:40px; border:none;
+    background:#fff; color:#1C325B; font-family:var(--font-ui); font-size:12.5px; font-weight:800;
+    cursor:pointer; white-space:nowrap; transition:transform .15s, box-shadow .15s; box-shadow:0 4px 14px rgba(0,0,0,.2);
+  }
+  .btn-pieces:hover:not(:disabled){ transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.28); }
+  .btn-pieces:disabled{ cursor:default; }
+  .btn-pieces.sent{ background:#d6f5e8; color:#0f7a55; box-shadow:none; }
+
+  /* ── MÉTRIQUES ── */
+  .metrics{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  @media (max-width:520px){ .metrics{ grid-template-columns:1fr; } }
+  .metric{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow-sm); }
+  .metric-val{ font-size:20px; font-weight:700; color:var(--navy); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .metric-val{ color:var(--ink); } }
+  :root[data-theme="dark"] .metric-val{ color:var(--ink); }
+  .metric-lbl{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.5px; margin-top:3px; }
+  .metric-sub{ font-size:11px; color:var(--ink-faint); margin-top:4px; }
+  .metric-badge{ display:inline-flex; font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; margin-top:6px; }
+  .badge-green{ background:var(--good-soft); color:var(--good-ink); }
+  .badge-orange{ background:var(--warn-soft); color:var(--warn-ink); }
+  .badge-red{ background:var(--bad-soft); color:var(--bad-ink); }
+
+  /* ── PLAN DE FINANCEMENT ── */
+  .plan{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:var(--shadow-sm); }
+  .plan-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:560px){ .plan-grid{ grid-template-columns:1fr; } }
+  .plan-title{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--ink-faint); margin-bottom:10px; }
+  .row{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:4px 0; }
+  .row-lbl{ font-size:12px; color:var(--ink-muted); font-weight:600; }
+  .row-val{ font-size:14px; font-weight:700; color:var(--ink); white-space:nowrap; }
+  .row.total{ border-top:1px solid var(--border); margin-top:4px; padding-top:8px; }
+  .ptz-amount{ font-size:26px; font-weight:800; color:var(--navy); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .ptz-amount{ color:var(--accent); } }
+  :root[data-theme="dark"] .ptz-amount{ color:var(--accent); }
+  .ptz-chip{ display:inline-flex; font-size:10.5px; font-weight:800; padding:3px 10px; border-radius:20px; background:var(--accent-soft); color:var(--accent-ink); margin-left:6px; vertical-align:middle; }
+  .ptz-detail{ font-size:12px; color:var(--ink-muted); margin-top:6px; line-height:1.55; }
+  .ptz-script{ margin-top:12px; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:6px; padding:10px 12px; font-size:12px; color:var(--ink); line-height:1.5; }
+  .ptz-script b{ color:var(--accent-ink); }
+  .ptz-ko{ font-size:13px; font-weight:700; color:var(--bad-ink); }
+
+  /* ── CARTES ── */
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); }
+  .card-muted{ background:var(--surface-2); box-shadow:none; }
+  .card-label{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--ink-faint); margin-bottom:15px; display:flex; align-items:center; gap:7px; }
+  .step-num-badge{ display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:var(--accent); color:#fff; font-family:var(--font-mono); font-size:10px; font-weight:800; flex-shrink:0; }
+  .card-label-tag{ font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-faint); background:var(--surface); border:1px solid var(--border); padding:2px 8px; border-radius:20px; margin-left:2px; }
+
+  .fg{ display:grid; gap:13px; }
+  .fg-2{ grid-template-columns:1fr 1fr; }
+  .fg-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:540px){ .fg-2,.fg-3{ grid-template-columns:1fr; } }
+  .mt{ margin-top:13px; }
+
+  .field{ display:flex; flex-direction:column; gap:5px; }
+  .field>label{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.4px; }
+  .req{ color:var(--accent); }
+  .field input, .field select, .field textarea{
+    width:100%; padding:10px 13px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+    font-family:var(--font-ui); font-size:13.5px; color:var(--ink); background:var(--surface); outline:none;
+    transition:border-color .15s, box-shadow .15s; appearance:none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .field.has-error input{ border-color:var(--bad); }
+  .field-hint{ font-size:11px; color:var(--ink-faint); }
+  .field-hint.warn{ color:var(--warn-ink); font-weight:600; }
+
+  .amount-wrap{ position:relative; }
+  .amount-wrap input{ padding-right:32px; font-family:var(--font-mono); }
+  .amount-suffix{ position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; font-weight:700; color:var(--ink-faint); pointer-events:none; }
+
+  .toggle-group{ display:flex; flex-wrap:wrap; gap:7px; }
+  .toggle-btn{
+    padding:8px 15px; border:1.5px solid var(--border); border-radius:40px; background:var(--surface);
+    font-family:var(--font-ui); font-size:12.5px; font-weight:600; color:var(--ink-muted); cursor:pointer; transition:all .15s; user-select:none;
+  }
+  .toggle-btn:hover{ border-color:var(--accent); color:var(--accent-ink); }
+  .toggle-btn.sel, .toggle-btn.sel:hover{ background:var(--navy); border-color:var(--navy); color:#fff; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .toggle-btn.sel, .toggle-btn.sel:hover{ background:var(--accent); border-color:var(--accent); color:#0b1322; } }
+  :root[data-theme="dark"] .toggle-btn.sel, .toggle-btn.sel:hover{ background:var(--accent); border-color:var(--accent); color:#0b1322; }
+
+  .stepper{ display:flex; align-items:center; gap:8px; }
+  .stepper button{ width:34px; height:34px; border-radius:50%; border:1.5px solid var(--border); background:var(--surface); color:var(--ink); font-size:16px; font-weight:700; cursor:pointer; font-family:var(--font-ui); }
+  .stepper button:hover{ border-color:var(--accent); }
+  .stepper span{ min-width:26px; text-align:center; font-family:var(--font-mono); font-weight:700; font-size:16px; }
+
+  .divider{ height:1px; background:var(--border); margin:15px 0; }
+  .info-box{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 14px; font-size:12px; color:var(--ink-muted); line-height:1.5; }
+
+  .slider-row{ display:grid; grid-template-columns:1fr auto; align-items:center; gap:14px; }
+  .slider-readout{ font-family:var(--font-mono); font-weight:700; font-size:16px; color:var(--ink); min-width:78px; text-align:right; }
+  input[type="range"]{ -webkit-appearance:none; width:100%; height:5px; border-radius:3px; background:var(--surface); outline:none; border:1px solid var(--border); cursor:pointer; padding:0; }
+  input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--accent); cursor:pointer; border:2px solid var(--surface); box-shadow:0 2px 6px rgba(42,171,227,.4); }
+  input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border-radius:50%; background:var(--accent); cursor:pointer; border:2px solid var(--surface); }
+  .slider-scale{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-faint); margin-top:5px; }
+
+  /* ── BARRE BASSE ── */
+  .nav-fixed{ position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); padding:13px 20px; display:flex; align-items:center; justify-content:flex-end; gap:14px; box-shadow:0 -6px 20px rgba(20,30,50,.08); z-index:50; }
+  .nav-status{ font-size:11.5px; color:var(--ink-muted); font-weight:600; margin-right:auto; }
+  .btn-submit{ display:flex; align-items:center; gap:8px; padding:12px 26px; border:none; border-radius:40px; background:linear-gradient(135deg,#1C325B,#264574); font-family:var(--font-ui); font-size:13px; font-weight:700; color:#fff; cursor:pointer; transition:all .2s; box-shadow:0 4px 14px rgba(28,50,91,.3); }
+  .btn-submit:hover{ transform:translateY(-1px); }
+  .btn-submit:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+  .spinner{ width:15px; height:15px; border:2px solid rgba(128,128,128,.35); border-top-color:currentColor; border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .toast{ position:fixed; bottom:82px; left:50%; transform:translateX(-50%) translateY(10px); background:#1C325B; color:#fff; padding:10px 20px; border-radius:40px; font-size:12.5px; font-weight:600; opacity:0; transition:all .3s cubic-bezier(.4,0,.2,1); z-index:300; pointer-events:none; max-width:calc(100vw - 32px); text-align:center; box-shadow:var(--shadow-lg); }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .toast.t-success{ background:#0f7a55; }
+  .toast.t-error{ background:#9c4934; }
+
+  /* ── PANNEAU DOSSIER ROUGE (flottant, non bloquant) ── */
+  .modal-overlay{ position:fixed; top:90px; right:18px; z-index:250; width:310px; max-width:calc(100vw - 36px); pointer-events:none; }
+  .modal-card{ background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-lg); pointer-events:auto; position:relative; animation:modalSlideIn .25s ease; max-height:calc(100vh - 120px); overflow:auto; }
+  @keyframes modalSlideIn{ from{ opacity:0; transform:translateX(16px); } to{ opacity:1; transform:translateX(0); } }
+  .modal-close-x{ position:absolute; top:10px; right:10px; width:24px; height:24px; border-radius:50%; border:none; background:var(--surface-2); color:var(--ink-faint); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .modal-tag{ display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:3px 9px; border-radius:20px; margin-bottom:8px; }
+  .modal-tag-rouge{ background:var(--bad-soft); color:var(--bad-ink); }
+  .modal-tag-negatif{ background:rgba(120,40,40,.16); color:#7a2a2a; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .modal-tag-negatif{ background:rgba(220,110,110,.18); color:#e08a8a; } }
+  :root[data-theme="dark"] .modal-tag-negatif{ background:rgba(220,110,110,.18); color:#e08a8a; }
+  .modal-title{ font-size:15px; font-weight:800; color:var(--ink); margin-bottom:5px; padding-right:20px; }
+  .modal-sub{ font-size:11.5px; color:var(--ink-muted); margin-bottom:12px; line-height:1.5; }
+  .modal-gap{ background:var(--bad-soft); color:var(--bad-ink); border-radius:8px; padding:9px 11px; font-size:12px; font-weight:700; margin-bottom:14px; line-height:1.45; }
+  .modal-q{ margin-bottom:13px; }
+  .modal-q label{ display:block; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+  .modal-q .field-hint{ display:block; margin-bottom:7px; }
+  .btn-modal-close{ width:100%; margin-top:6px; padding:12px; border:none; border-radius:40px; background:#1C325B; color:#fff; font-family:var(--font-ui); font-size:13px; font-weight:700; cursor:pointer; }
+
+  .success-screen{ display:none; text-align:center; padding:70px 20px; }
+  .success-screen.active{ display:block; }
+  .success-icon{ font-size:52px; margin-bottom:14px; }
+  .success-title{ font-size:22px; font-weight:800; color:var(--ink); margin-bottom:8px; }
+  .success-sub{ font-size:13.5px; color:var(--ink-muted); line-height:1.6; }
+  .btn-next{ display:inline-flex; align-items:center; gap:8px; padding:11px 24px; border:none; border-radius:40px; background:#1C325B; font-family:var(--font-ui); font-size:13px; font-weight:700; color:#fff; cursor:pointer; margin-top:22px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .toggle-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-row">
+    <svg class="header-logo" viewBox="470 140 770 625" aria-label="Solution Neuf" role="img"><defs><clipPath id="c-sym"><rect x="400" y="100" width="900" height="648"/></clipPath></defs>
+      <path d="M499 680 V168 H752" fill="none" stroke="#2AABE3" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+      <g clip-path="url(#c-sym)" stroke="#fff"><line x1="897.0" y1="248.0" x2="596.8" y2="788.0" stroke-width="159" stroke-linecap="round"/><line x1="1008.7" y1="472.5" x2="833.3" y2="788.0" stroke-width="159" stroke-linecap="round"/><line x1="1137.6" y1="661.5" x2="1067.3" y2="788.0" stroke-width="159" stroke-linecap="round"/></g>
+      <circle cx="1108" cy="312" r="80" fill="#2AABE3"/></svg>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Qualification PTZ · Neuf résidence principale</div>
+      <div class="header-sub">Outil interne télépros · Solution Neuf</div>
+    </div>
+    <nav class="header-nav" aria-label="Pages de l'outil">
+      <a href="index.html" aria-current="page">🧮 Simulateur</a>
+      <a href="memo.html" target="_blank" rel="noopener">📘 Mémo PTZ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Panneau flottant non bloquant : leviers de rattrapage d'un dossier rouge -->
+<div class="modal-overlay hidden" id="redModal">
+  <div class="modal-card">
+    <button class="modal-close-x" onclick="closeRedModal()" aria-label="Fermer">✕</button>
+    <div class="modal-tag" id="modalTag"></div>
+    <div class="modal-title" id="modalTitle">Dossier à retravailler</div>
+    <p class="modal-sub" id="modalSub"></p>
+    <div class="modal-gap" id="modalGap"></div>
+    <div class="modal-q">
+      <label>Peut-on augmenter l'apport ?</label>
+      <span class="field-hint">Épargne, donation familiale, déblocage d'épargne salariale…</span>
+      <div class="toggle-group" data-obj="augmenter_apport">
+        <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
+        <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
+      </div>
+    </div>
+    <div class="modal-q">
+      <label>Le prix du bien est-il négociable ?</label>
+      <span class="field-hint">Remise promoteur, frais de notaire offerts, typologie plus petite…</span>
+      <div class="toggle-group" data-obj="prix_negociable">
+        <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
+        <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
+      </div>
+    </div>
+    <div class="modal-q">
+      <label>Peut-on revoir la zone ou le programme ?</label>
+      <span class="field-hint">Commune voisine moins chère, autre programme, maison ↔ appartement…</span>
+      <div class="toggle-group" data-obj="revoir_programme">
+        <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
+        <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
+      </div>
+    </div>
+    <button class="btn-modal-close" onclick="closeRedModal()">Enregistrer et fermer</button>
+  </div>
+</div>
+
+<div class="container" id="formScreen">
+
+  <!-- ═══ LE VOYANT ═══ -->
+  <div class="signal s-neutral" id="signal">
+    <div class="signal-top">
+      <div class="signal-dot"></div>
+      <div>
+        <div class="signal-label">Plan de financement</div>
+        <div class="signal-verdict" id="signalVerdict">En attente des informations du prospect</div>
+      </div>
+    </div>
+    <div class="signal-reasons" id="signalReasons"></div>
+    <div class="signal-stats">
+      <div>
+        <div class="signal-stat-val mono" id="sCapacite">— €</div>
+        <div class="signal-stat-lbl">Capacité totale</div>
+        <div class="signal-stat-sub">apport + prêt + PTZ</div>
+      </div>
+      <div>
+        <div class="signal-stat-val mono" id="sPrix">— €</div>
+        <div class="signal-stat-lbl">Prix du bien</div>
+        <div class="signal-stat-sub">hors frais de notaire</div>
+      </div>
+      <div>
+        <div class="signal-stat-val mono" id="sPtz">— €</div>
+        <div class="signal-stat-lbl">PTZ estimé</div>
+        <div class="signal-stat-sub" id="sPtzSub">—</div>
+      </div>
+    </div>
+    <div class="pieces-cta hidden" id="piecesCta">
+      <div class="pieces-cta-text" id="piecesCtaText"></div>
+      <button type="button" class="btn-pieces hidden" id="btnPieces" onclick="demanderPieces()">📄 Demander les pièces justificatives</button>
+    </div>
+  </div>
+
+  <!-- ═══ MÉTRIQUES ═══ -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-val mono" id="mMensualite">0 €</div>
+      <div class="metric-lbl">Mensualité totale</div>
+      <div class="metric-sub" id="mMensualiteSub">assurance comprise</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val mono" id="mTde">—</div>
+      <div class="metric-lbl">Taux d'endettement</div>
+      <div class="metric-sub" id="mTdeSub"></div>
+      <div id="mTdeBadge"></div>
+    </div>
+    <div class="metric">
+      <div class="metric-val mono" id="mRav">—</div>
+      <div class="metric-lbl">Reste à vivre</div>
+      <div class="metric-sub" id="mRavSub"></div>
+    </div>
+  </div>
+
+  <!-- ═══ PLAN DE FINANCEMENT & PTZ (live) ═══ -->
+  <div class="plan">
+    <div class="plan-grid">
+      <div>
+        <div class="plan-title">Prêt à taux zéro</div>
+        <div id="ptzBlock"><div class="ptz-detail">Renseignez la zone, le foyer, la primo-accession et le revenu fiscal de référence.</div></div>
+      </div>
+      <div>
+        <div class="plan-title">Financement du prix</div>
+        <div class="row"><span class="row-lbl">Apport</span><span class="row-val mono" id="fApport">0 €</span></div>
+        <div class="row"><span class="row-lbl">PTZ</span><span class="row-val mono" id="fPtz">0 €</span></div>
+        <div class="row"><span class="row-lbl">Prêt bancaire</span><span class="row-val mono" id="fPret">0 €</span></div>
+        <div class="row total"><span class="row-lbl">Prix du bien</span><span class="row-val mono" id="fPrix">0 €</span></div>
+        <div class="row" id="fSautRow"><span class="row-lbl">Saut de charge vs loyer actuel</span><span class="row-val mono" id="fSaut">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ① CONTACT ═══ -->
+  <div class="card">
+    <div class="card-label"><span class="step-num-badge">1</span>👤 Contact prospect</div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label for="prenom">Prénom <span class="req">*</span></label>
+        <input type="text" id="prenom" placeholder="Jean" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="nom">Nom <span class="req">*</span></label>
+        <input type="text" id="nom" placeholder="DUPONT" autocomplete="off" oninput="this.value=this.value.toUpperCase()">
+      </div>
+    </div>
+    <div class="fg fg-2 mt">
+      <div class="field">
+        <label for="tel">Téléphone <span class="req">*</span></label>
+        <input type="tel" id="tel" placeholder="06 12 34 56 78" oninput="formatPhone(this)" maxlength="14" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="jean.dupont@email.fr" autocomplete="off" oninput="onEmailInput()">
+        <span class="field-hint">Indispensable pour envoyer la demande de pièces</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ② PROJET ═══ -->
+  <div class="card">
+    <div class="card-label"><span class="step-num-badge">2</span>🏠 Projet résidence principale neuve</div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label for="prix">Prix du bien neuf <span class="req">*</span></label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="prix" placeholder="240 000" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Prix TTC du logement (parking compris), hors frais de notaire</span>
+      </div>
+      <div class="field">
+        <label for="apport">Apport personnel</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="apport" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Épargne que le prospect met dans l'opération</span>
+      </div>
+    </div>
+    <div class="fg fg-2 mt">
+      <div class="field">
+        <label>Zone PTZ du bien <span class="req">*</span></label>
+        <div class="toggle-group" data-key="zone">
+          <div class="toggle-btn" data-val="A">A / A bis</div>
+          <div class="toggle-btn" data-val="B1">B1</div>
+          <div class="toggle-btn" data-val="B2">B2</div>
+          <div class="toggle-btn" data-val="C">C</div>
+        </div>
+        <span class="field-hint">Indiquée sur la fiche du programme</span>
+      </div>
+      <div class="field">
+        <label>Type de logement</label>
+        <div class="toggle-group" data-key="type">
+          <div class="toggle-btn sel" data-val="appartement">🏢 Appartement</div>
+          <div class="toggle-btn" data-val="maison">🏡 Maison</div>
+        </div>
+        <span class="field-hint">Le PTZ finance moins en maison individuelle</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label>Personnes qui habiteront le logement</label>
+        <div class="fg fg-2" style="gap:8px;">
+          <div><span class="field-hint">Adultes</span>
+            <div class="stepper"><button type="button" onclick="step('adultes',-1)" aria-label="Moins d'adultes">−</button><span id="adultesVal">1</span><button type="button" onclick="step('adultes',1)" aria-label="Plus d'adultes">+</button></div></div>
+          <div><span class="field-hint">Enfants / personnes à charge</span>
+            <div class="stepper"><button type="button" onclick="step('enfants',-1)" aria-label="Moins d'enfants">−</button><span id="enfantsVal">0</span><button type="button" onclick="step('enfants',1)" aria-label="Plus d'enfants">+</button></div></div>
+        </div>
+        <span class="field-hint">Sert au PTZ (plafonds) et au reste à vivre</span>
+      </div>
+      <div class="field">
+        <label>Primo-accédant ? <span class="req">*</span></label>
+        <div class="toggle-group" data-key="primo">
+          <div class="toggle-btn" data-val="oui">Oui</div>
+          <div class="toggle-btn" data-val="non">Non</div>
+          <div class="toggle-btn" data-val="exception">Exception</div>
+        </div>
+        <span class="field-hint" id="primoHint">Pas propriétaire de sa résidence principale depuis 2 ans</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ③ REVENUS ═══ -->
+  <div class="card">
+    <div class="card-label"><span class="step-num-badge">3</span>💼 Revenus du foyer</div>
+    <div class="field" style="margin-bottom:13px;">
+      <label>Statut professionnel</label>
+      <div class="toggle-group" data-key="statut">
+        <div class="toggle-btn sel" data-val="CDI">CDI</div>
+        <div class="toggle-btn" data-val="CDD">CDD</div>
+        <div class="toggle-btn" data-val="Fonctionnaire">Fonctionnaire</div>
+        <div class="toggle-btn" data-val="Indépendant">Indépendant</div>
+        <div class="toggle-btn" data-val="Retraité">Retraité</div>
+        <div class="toggle-btn" data-val="Sans emploi">Sans emploi</div>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label for="revenu1">Revenu net mensuel <span class="req">*</span></label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="revenu1" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Net avant impôt, primes régulières comprises</span>
+      </div>
+      <div class="field">
+        <label for="autresRevenus">Autres revenus mensuels</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="autresRevenus" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Allocations CAF, pension alimentaire reçue…</span>
+      </div>
+    </div>
+    <div class="field mt">
+      <label>Co-emprunteur ?</label>
+      <div class="toggle-group" data-key="coemp">
+        <div class="toggle-btn sel" data-val="non">Non</div>
+        <div class="toggle-btn" data-val="oui">Oui</div>
+      </div>
+    </div>
+    <div class="fg fg-2 mt hidden" id="coempBlock">
+      <div class="field">
+        <label for="statut2">Statut du co-emprunteur</label>
+        <select id="statut2">
+          <option>CDI</option><option>CDD</option><option>Fonctionnaire</option><option>Indépendant</option><option>Retraité</option><option>Sans emploi</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="revenu2">Revenu net mensuel</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="revenu2" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label for="rfr">Revenu fiscal de référence <span id="rfrYear"></span> <span class="req" id="rfrReq">*</span></label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="rfr" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint" id="rfrHint"></span>
+      </div>
+      <div class="info-box" id="rfrInfo">Le PTZ se calcule sur le <b>revenu fiscal de référence</b>, pas sur le salaire actuel. Si les futurs occupants ont des avis d'imposition séparés, additionnez les RFR.</div>
+    </div>
+  </div>
+
+  <!-- ═══ ④ CHARGES ═══ -->
+  <div class="card">
+    <div class="card-label"><span class="step-num-badge">4</span>💳 Charges actuelles</div>
+    <div class="fg fg-2">
+      <div class="field">
+        <label for="credits">Mensualités de crédits en cours</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="credits" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Auto, conso, LOA… + pension alimentaire versée</span>
+      </div>
+      <div class="field">
+        <label for="loyer">Loyer actuel</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="loyer" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Disparaît après l'achat : hors endettement, sert au « saut de charge »</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ HYPOTHÈSES ═══ -->
+  <div class="card card-muted">
+    <div class="card-label">🎚 Hypothèses du prêt bancaire <span class="card-label-tag">optionnel</span></div>
+    <div class="fg">
+      <div class="field">
+        <label for="dureeRange">Durée du prêt</label>
+        <div class="slider-row">
+          <input type="range" id="dureeRange" min="10" max="25" step="1" value="25" oninput="onSlider()">
+          <div class="slider-readout"><span id="dureeVal">25</span> ans</div>
+        </div>
+        <div class="slider-scale"><span>10 ans</span><span>25 ans (max HCSF)</span></div>
+      </div>
+      <div class="field">
+        <label for="tauxRange">Taux d'intérêt indicatif</label>
+        <div class="slider-row">
+          <input type="range" id="tauxRange" min="2" max="5" step="0.05" value="3.2" oninput="onSlider()">
+          <div class="slider-readout"><span id="tauxVal">3,20</span> %</div>
+        </div>
+        <div class="slider-scale"><span>2 %</span><span>5 %</span></div>
+      </div>
+      <div class="field-hint">Assurance emprunteur estimée à 0,30 %/an, incluse dans les mensualités. Endettement maximal 35 % assurance comprise (HCSF).</div>
+    </div>
+  </div>
+
+  <!-- ═══ ⑤ NOTES ═══ -->
+  <div class="card">
+    <div class="card-label"><span class="step-num-badge">5</span>📝 Notes de qualification</div>
+    <div class="field">
+      <textarea id="notes" rows="3" style="resize:vertical;" placeholder="Programme visé, ville, délai, motivation, disponibilité…"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h2 class="success-title">Fiche envoyée</h2>
+  <p class="success-sub" id="successSub">La fiche de synthèse a été transmise à l'équipe commerciale.</p>
+  <button class="btn-next" onclick="resetForm()">Nouvelle qualification</button>
+</div>
+
+<div class="nav-fixed" id="navFixed">
+  <span class="nav-status" id="navStatus"></span>
+  <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Envoyer la fiche de synthèse</button>
+</div>
+
+<script src="assets/ptz-baremes.js"></script>
+<script>
+/* Barèmes PTZ : assets/ptz-baremes.js (partagés avec le mémo) */
+const MAX_DTI = 0.35;          // HCSF, assurance comprise
+const ASSURANCE = 0.0030;      // assurance emprunteur ≈ 0,30 %/an du capital
+const RAV_ADULTE = 800;        // reste à vivre minimum indicatif par adulte (€/mois)
+const RAV_ENFANT = 300;        // … par enfant / personne à charge
+const SEUIL_NEGATIF = 0.80;    // capacité totale < 80 % du prix : dossier NÉGATIF (non finançable en l'état)
+
+const FICHE_WH  = 'https://n8n.srv1404527.hstgr.cloud/webhook/sn-qualification-ptz';
+const PIECES_WH = 'https://n8n.srv1404527.hstgr.cloud/webhook/sn-ptz-demande-pieces';
+
+// Une offre de prêt émise l'année N retient le RFR de l'année N-2 (avis d'imposition reçu en N-1).
+const ANNEE = new Date().getFullYear();
+const ANNEE_RFR = ANNEE - 2;
+
+const state = {
+  zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0,
+  duree:25, taux:3.2, lastLevel:null, objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null },
+  pieces:null,   // { email, date, niveau } une fois la demande envoyée
+  sending:false,
+};
+
+/* ══════════ Calculs ══════════ */
+const annuite = (capital, tauxAn, mois) => capital <= 0 ? 0 : (tauxAn === 0 ? capital / mois : capital * (tauxAn / 12) / (1 - Math.pow(1 + tauxAn / 12, -mois)));
+
+function ptzPour(prix, s) {
+  if (s.primo === 'non') return { ok:false, raison:"Non primo-accédant : propriétaire de sa résidence principale ces 2 dernières années" };
+  const n = Math.min(s.personnes, 8), z = s.zone;
+  const plafond = PTZ.ressources[z][n - 1];
+  if (s.rfr > plafond) return { ok:false, raison:`RFR au-dessus du plafond PTZ (${fmt(plafond)} en zone ${zoneLbl(z)} pour ${n} pers.)`, plafondRessources:plafond };
+  const ressources = Math.max(s.rfr, prix / 9);          // revenus retenus : au moins le coût de l'opération ÷ 9
+  const parPart = ressources / PTZ.coef[n - 1];
+  const t = PTZ.tranches[z].findIndex(lim => parPart <= lim);
+  if (t < 0) return { ok:false, raison:"Hors tranches PTZ compte tenu du prix (prix ÷ 9 > plafond de la tranche 4)", plafondRessources:plafond };
+  const plafondOp = PTZ.operation[z][Math.min(n, 5) - 1];
+  const base = Math.min(prix, plafondOp);
+  return { ok:true, tranche:t + 1, quotite:PTZ.quotite[s.type][t], base, plafondOp, plafondRessources:plafond, montant:base * PTZ.quotite[s.type][t], ressourcesRetenues:ressources, ...PTZ.remboursement[t] };
+}
+
+// Lit le formulaire et calcule tout : la même fonction sert à l'affichage, au voyant ET aux garde-fous d'envoi.
+function compute() {
+  const s = {
+    prix:getAmount('prix'), apport:getAmount('apport'), zone:state.zone, type:state.type, primo:state.primo,
+    adultes:state.adultes, enfants:state.enfants, personnes:state.adultes + state.enfants,
+    revenu1:getAmount('revenu1'), revenu2:state.coemp === 'oui' ? getAmount('revenu2') : 0, autres:getAmount('autresRevenus'),
+    rfr:getAmount('rfr'), credits:getAmount('credits'), loyer:getAmount('loyer'), duree:state.duree, taux:state.taux / 100,
+  };
+  s.revenus = s.revenu1 + s.revenu2 + s.autres;
+  const r = { s, missing:[] };
+
+  if (s.prix < 10000) r.missing.push('le prix du bien');
+  if (!s.zone) r.missing.push('la zone PTZ');
+  if (!s.primo) r.missing.push('la primo-accession');
+  if (s.revenu1 + s.revenu2 <= 0) r.missing.push('le revenu net mensuel');
+  if (s.primo && s.primo !== 'non' && s.rfr <= 0) r.missing.push('le revenu fiscal de référence');
+
+  // PTZ (calculable dès que prix + zone + primo + RFR sont connus)
+  let ptz = { ok:false, raison:null };
+  if (s.prix >= 10000 && s.zone && s.primo) {
+    if (s.primo === 'non') ptz = ptzPour(s.prix, s);
+    else if (s.rfr > 0) ptz = ptzPour(s.prix, s);
+  }
+  let montantPtz = ptz.ok ? ptz.montant : 0;
+  let pret = Math.max(0, s.prix - s.apport - montantPtz);
+  if (ptz.ok) {   // le PTZ ne peut pas dépasser le prêt principal (×1,25 en tranche 1) — même règle que le simulateur du site
+    const ratio = ptz.tranche === 1 ? 1.25 : 1;
+    if (montantPtz > pret * ratio) { montantPtz = Math.max(0, (s.prix - s.apport) * ratio / (1 + ratio)); pret = Math.max(0, s.prix - s.apport - montantPtz); }
+    ptz.montant = montantPtz;
+    ptz.mensualite = montantPtz / (ptz.duree * 12);
+  }
+  const mois = s.duree * 12;
+  const mensBanque = annuite(pret, s.taux, mois) + pret * ASSURANCE / 12;
+  const mensPtz = ptz.ok ? ptz.mensualite : 0;
+  const ptzImmediat = ptz.ok && ptz.differe === 0;
+  // Période 1 : pendant le différé PTZ (0 € de PTZ, sauf tranche 4 sans différé)
+  const mensP1 = mensBanque + (ptzImmediat ? mensPtz : 0);
+  // Période 2 : PTZ en remboursement (le prêt bancaire court encore si le différé est plus court que sa durée)
+  const mensP2 = ptz.ok && !ptzImmediat ? (ptz.differe < s.duree ? mensBanque : 0) + mensPtz : mensP1;
+
+  const tde1 = s.revenus > 0 ? (s.credits + mensP1) / s.revenus * 100 : 0;
+  const tde2 = s.revenus > 0 ? (s.credits + mensP2) / s.revenus * 100 : 0;
+
+  // Lissage (pratique bancaire, même calcul que le simulateur du site) : mensualité totale constante sur la durée du prêt,
+  // le prêt bancaire absorbant le remboursement du PTZ après son différé. X = (prêt + valeur actuelle des échéances PTZ) / annuité.
+  let vaPtz = 0, horsDuree = 0;
+  if (ptz.ok && !ptzImmediat && montantPtz > 0) {
+    const debut = ptz.differe * 12, i = s.taux / 12;
+    for (let m = debut + 1; m <= debut + ptz.duree * 12; m++) {
+      if (m <= mois) vaPtz += mensPtz / Math.pow(1 + i, m); else horsDuree = mensPtz;   // échéances au-delà du prêt bancaire : non lissables
+    }
+  }
+  const mensLissee = vaPtz > 0 ? Math.max(annuite(pret + vaPtz, s.taux, mois) + pret * ASSURANCE / 12, horsDuree) : mensP1;
+  const tdeLisse = s.revenus > 0 ? (s.credits + mensLissee) / s.revenus * 100 : 0;
+  const t1 = Math.round(tde1 * 10) / 10, t2 = Math.round(tde2 * 10) / 10, tL = Math.round(tdeLisse * 10) / 10;   // 35,0 % pile accepté
+  const lissage = t2 > MAX_DTI * 100;           // sans lissage, le dossier ne tient pas une fois le PTZ en remboursement
+  const mensRef = lissage ? mensLissee : mensP1; // mensualité réellement supportée par le foyer
+
+  // Capacité : apport + PTZ + capital bancaire que permet 35 % des revenus (déduction faite des crédits, d'un PTZ remboursé
+  // tout de suite, et de la part de mensualité qu'il faut réserver pour lisser le PTZ différé)
+  const mensMax = Math.max(0, s.revenus * MAX_DTI - s.credits - (ptzImmediat ? mensPtz : 0));
+  const capBancaire = mensMax > 0 ? Math.max(0, mensMax / (annuite(1, s.taux, mois) + ASSURANCE / 12) - (lissage ? vaPtz : 0)) : 0;
+  const capTotale = s.apport + montantPtz + capBancaire;
+
+  const rav = s.revenus - s.credits - mensRef;
+  const ravMin = s.adultes * RAV_ADULTE + s.enfants * RAV_ENFANT;
+
+  Object.assign(r, { ptz, montantPtz, pret, mensBanque, mensPtz, ptzImmediat, mensP1, mensP2, mensLissee, lissage, tde1, tde2, tdeLisse,
+    capBancaire, capTotale, ecart:Math.max(0, s.prix - capTotale), rav, ravMin, saut:s.loyer > 0 ? mensRef - s.loyer : null });
+
+  // ── Voyant ──
+  //  vert   : ≤ 35 % y compris quand le PTZ se rembourse, et reste à vivre suffisant
+  //  orange : ≤ 35 % seulement en lissant prêt + PTZ (à monter par la banque), ou reste à vivre juste
+  //  rouge  : > 35 % même lissé (ROUGE = à retravailler ; NÉGATIF = capacité < 80 % du prix ou crédits déjà à 35 %)
+  const reasons = [];
+  let level = 'neutral', verdict = 'En attente des informations du prospect', redType = null;
+  if (r.missing.length) {
+    reasons.push('À renseigner : ' + r.missing.join(', '));
+  } else if (mensMax <= 0 || capTotale < s.prix * SEUIL_NEGATIF) {
+    level = 'red'; redType = 'negatif'; verdict = 'Dossier NÉGATIF : non finançable en l\'état';
+    if (mensMax <= 0) reasons.push(`Les crédits en cours (${fmt(s.credits)}/mois) atteignent déjà 35 % des revenus`);
+    else reasons.push(`Capacité totale ${fmt(capTotale)} : il manque ${fmt(r.ecart)} (plus de 20 % du prix)`);
+    reasons.push('Écart trop important pour un simple ajustement : revoir le projet en profondeur');
+  } else if (t1 > MAX_DTI * 100 || (lissage && tL > MAX_DTI * 100)) {
+    level = 'red'; redType = 'rouge'; verdict = 'Dossier ROUGE : à retravailler';
+    if (t1 > MAX_DTI * 100) reasons.push(`Endettement à ${fmtPct(tde1)} dès la 1re mensualité, au-delà de 35 %`);
+    else reasons.push(`${fmtPct(tde1)} pendant le différé, mais ${fmtPct(tde2)} quand le PTZ se rembourse, et ${fmtPct(tdeLisse)} même en lissant les prêts`);
+    reasons.push(`Il manque ${fmt(r.ecart)} de capacité : apport, prix ou programme à revoir`);
+  } else if (!lissage && rav >= ravMin) {
+    level = 'green'; verdict = 'Dossier finançable : demander les pièces';
+    reasons.push(`Endettement ${fmtPct(tde1)}${ptz.ok && !ptzImmediat ? `, et ${fmtPct(tde2)} une fois le PTZ en remboursement` : ''}`);
+    reasons.push(`Capacité ${fmt(capTotale)} pour un prix de ${fmt(s.prix)}`);
+  } else {
+    level = 'orange'; verdict = 'Dossier finançable sous réserve';
+    if (lissage) reasons.push(`${fmtPct(tde2)} quand le PTZ se rembourse : passe à ${fmtPct(tdeLisse)} si la banque lisse prêt + PTZ (${fmt(mensLissee)}/mois constants)`);
+    if (rav < ravMin) reasons.push(`Reste à vivre ${fmt(rav)}, sous le minimum indicatif de ${fmt(ravMin)} pour ce foyer`);
+  }
+  if (!r.missing.length && !ptz.ok && ptz.raison) reasons.push('Pas de PTZ : ' + ptz.raison);
+  Object.assign(r, { level, verdict, reasons, redType, qualifie: level === 'green' || level === 'orange' });
+  return r;
+}
+
+/* ══════════ Affichage ══════════ */
+function render() {
+  const r = compute(), s = r.s, p = r.ptz;
+
+  // Voyant
+  const signal = document.getElementById('signal');
+  if (state.lastLevel !== null && state.lastLevel !== r.level) { signal.classList.remove('pulse'); void signal.offsetWidth; signal.classList.add('pulse'); }
+  const becameRed = r.level === 'red' && state.lastLevel !== 'red';
+  state.lastLevel = r.level; state.redType = r.redType; state.lastCalc = r;
+  signal.className = 'signal s-' + r.level + (signal.classList.contains('pulse') ? ' pulse' : '');
+  setText('signalVerdict', r.verdict);
+  document.getElementById('signalReasons').innerHTML = r.reasons.map(x => `<div class="signal-reason">${esc(x)}</div>`).join('')
+    + (r.level === 'red' ? '<button class="signal-reopen" onclick="openRedModal()">📋 Leviers de rattrapage (apport / prix / programme)</button>' : '');
+  setText('sCapacite', s.revenus > 0 ? fmt(r.capTotale) : '— €');
+  setText('sPrix', s.prix ? fmt(s.prix) : '— €');
+  setText('sPtz', p.ok ? fmt(r.montantPtz) : (p.raison ? '0 €' : '— €'));
+  setText('sPtzSub', p.ok ? `tranche ${p.tranche} · ${p.differe ? 'différé ' + p.differe + ' ans' : 'sans différé'}` : (p.raison ? 'non éligible' : 'à calculer'));
+  if (becameRed) openRedModal();
+  if (r.level === 'red') updateRedModal(r); else closeRedModal();
+  updatePiecesCta(r);
+
+  // Métriques
+  setText('mMensualite', fmt(r.lissage ? r.mensLissee : r.mensP1));
+  setText('mMensualiteSub', r.lissage ? `lissée prêt + PTZ (sans lissage : ${fmt(r.mensP1)} puis ${fmt(r.mensP2)})`
+    : p.ok && !r.ptzImmediat ? `puis ${fmt(r.mensP2)} après ${p.differe} ans (PTZ)` : 'assurance comprise');
+  if (s.revenus > 0 && s.prix) {
+    setText('mTde', fmtPct(r.lissage ? r.tdeLisse : r.tde1));
+    setText('mTdeSub', r.lissage ? `lissé · sans lissage ${fmtPct(r.tde1)} puis ${fmtPct(r.tde2)}`
+      : p.ok && !r.ptzImmediat ? `${fmtPct(r.tde2)} quand le PTZ se rembourse` : '');
+    const now = Math.round(r.tde1 * 10) / 10, lisse = Math.round(r.tdeLisse * 10) / 10, apres = Math.round(r.tde2 * 10) / 10;
+    setHtml('mTdeBadge', now > 35 || (r.lissage && lisse > 35) ? '<div class="metric-badge badge-red">Au-delà de 35 %</div>'
+      : r.lissage ? '<div class="metric-badge badge-orange">Lissage nécessaire</div>'
+      : Math.max(now, apres) > 33 ? '<div class="metric-badge badge-orange">Limite HCSF</div>' : '<div class="metric-badge badge-green">Conforme HCSF</div>');
+    setText('mRav', fmt(r.rav));
+    setText('mRavSub', `minimum indicatif ${fmt(r.ravMin)} (${s.adultes} adulte${s.adultes > 1 ? 's' : ''}${s.enfants ? ', ' + s.enfants + ' enfant' + (s.enfants > 1 ? 's' : '') : ''})`);
+  } else {
+    setText('mTde', '—'); setText('mTdeSub', ''); setHtml('mTdeBadge', ''); setText('mRav', '—'); setText('mRavSub', '');
+  }
+
+  // Bloc PTZ
+  const blk = document.getElementById('ptzBlock');
+  if (p.ok) {
+    blk.innerHTML = `<div><span class="ptz-amount mono">${fmt(r.montantPtz)}</span><span class="ptz-chip">Tranche ${p.tranche} · ${Math.round(p.quotite * 100)} %</span></div>
+      <div class="ptz-detail">${Math.round(p.quotite * 100)} % × ${fmt(p.base)} ${p.base < s.prix ? `(prix plafonné à ${fmt(p.plafondOp)} en zone ${zoneLbl(s.zone)} pour ${Math.min(s.personnes, 5)}${s.personnes >= 5 ? '+' : ''} pers.)` : '(prix du bien, sous le plafond)'}${r.montantPtz < p.base * p.quotite - 1 ?'<br>Réduit : le PTZ ne peut pas dépasser le prêt bancaire.' : ''}<br>
+      Plafond de ressources : ${fmt(p.plafondRessources)} · RFR saisi : ${fmt(s.rfr)}</div>
+      <div class="ptz-script">${p.differe
+        ? `À dire au prospect : <b>0 € de PTZ à rembourser pendant ${p.differe} ans</b>, puis <b>${fmt(r.mensPtz)}/mois pendant ${p.duree} ans</b>. Ce n'est pas un cadeau : c'est un prêt sans intérêt, avec un différé.`
+        : `À dire au prospect : en tranche 4, <b>pas de différé</b>. Le PTZ se rembourse dès le départ : <b>${fmt(r.mensPtz)}/mois pendant ${p.duree} ans</b>, sans intérêt.`}</div>`;
+  } else if (p.raison) {
+    blk.innerHTML = `<div class="ptz-ko">Non éligible au PTZ</div><div class="ptz-detail">${esc(p.raison)}.</div>`;
+  } else {
+    blk.innerHTML = '<div class="ptz-detail">Renseignez le prix, la zone, la primo-accession et le revenu fiscal de référence.</div>';
+  }
+  setText('fApport', fmt(Math.min(s.apport, s.prix || s.apport)));
+  setText('fPtz', fmt(r.montantPtz));
+  setText('fPret', fmt(r.pret));
+  setText('fPrix', fmt(s.prix));
+  document.getElementById('fSautRow').classList.toggle('hidden', r.saut === null || !s.prix);
+  if (r.saut !== null) setText('fSaut', (r.saut >= 0 ? '+' : '−') + fmt(Math.abs(r.saut)) + '/mois');
+
+  // Aides de saisie
+  const rfrHint = document.getElementById('rfrHint');
+  const salAnnuel = (s.revenu1 + s.revenu2) * 12;
+  if (s.rfr > 0 && salAnnuel > 0 && (s.rfr > salAnnuel * 1.4 || s.rfr < salAnnuel * 0.5)) {
+    rfrHint.textContent = `⚠️ Écart important avec les salaires déclarés (≈ ${fmt(salAnnuel * 0.9)}/an attendu) : faire relire la ligne sur l'avis`;
+    rfrHint.classList.add('warn');
+  } else {
+    rfrHint.textContent = `Ligne « Revenu fiscal de référence » de l'avis d'imposition ${ANNEE_RFR + 1} (revenus ${ANNEE_RFR})`;
+    rfrHint.classList.remove('warn');
+  }
+  const noPtz = state.primo === 'non';
+  document.getElementById('rfrReq').classList.toggle('hidden', noPtz);
+  setText('primoHint', state.primo === 'exception'
+    ? 'Exception : carte mobilité inclusion « invalidité », pension d\'invalidité, AAH/AEEH, ou logement rendu inhabitable par une catastrophe'
+    : 'Pas propriétaire de sa résidence principale depuis 2 ans');
+
+  // Statut de la barre basse
+  setText('navStatus', state.pieces ? `📄 Pièces demandées à ${state.pieces.email}` : r.qualifie ? '📄 Pièces pas encore demandées' : '');
+}
+
+function updatePiecesCta(r) {
+  const cta = document.getElementById('piecesCta'), txt = document.getElementById('piecesCtaText'), btn = document.getElementById('btnPieces');
+  const email = document.getElementById('email').value.trim();
+  if (state.pieces) {   // déjà envoyée : on garde la trace visible, quel que soit le voyant
+    cta.classList.remove('hidden'); btn.classList.remove('hidden');
+    btn.disabled = true; btn.classList.add('sent'); btn.textContent = '✓ Pièces demandées';
+    txt.innerHTML = `<strong>Demande envoyée</strong><br>à ${esc(state.pieces.email)} (dossier ${state.pieces.niveau} au moment de l'envoi)`;
+    return;
+  }
+  btn.classList.remove('sent'); btn.textContent = '📄 Demander les pièces justificatives';
+  if (!r.qualifie) { cta.classList.add('hidden'); return; }
+  cta.classList.remove('hidden');
+  if (!isEmail(email)) {
+    btn.classList.add('hidden');
+    txt.innerHTML = '<strong>⚠️ Email du prospect à saisir</strong><br>Renseignez l\'email (carte Contact) pour débloquer la demande de pièces.';
+    return;
+  }
+  btn.classList.remove('hidden'); btn.disabled = state.sending;
+  txt.innerHTML = r.level === 'green'
+    ? '<strong>Dossier finançable</strong><br>Envoyez au prospect la liste des pièces pour monter le dossier.'
+    : '<strong>Finançable sous réserve</strong><br>Pièces à demander ; points de vigilance repris dans la fiche.';
+}
+
+/* ══════════ Panneau dossier rouge ══════════ */
+function updateRedModal(r) {
+  const tag = document.getElementById('modalTag');
+  if (r.redType === 'negatif') {
+    tag.textContent = 'NÉGATIF'; tag.className = 'modal-tag modal-tag-negatif';
+    setText('modalTitle', 'Non finançable en l\'état');
+    setText('modalSub', 'L\'écart est important. Avant de clore l\'appel, vérifiez ces leviers avec le prospect :');
+  } else {
+    tag.textContent = 'ROUGE'; tag.className = 'modal-tag modal-tag-rouge';
+    setText('modalTitle', 'Dossier à retravailler');
+    setText('modalSub', 'L\'endettement dépasse 35 %. Avant de clore l\'appel, vérifiez ces leviers avec le prospect :');
+  }
+  setText('modalGap', r.capBancaire <= 0
+    ? 'Les crédits en cours saturent déjà la capacité : un rachat ou un solde de crédit serait un préalable.'
+    : `Écart à combler : ${fmt(r.ecart)} (apport supplémentaire ou baisse de prix équivalente).`);
+}
+function openRedModal() { if (state.lastCalc) updateRedModal(state.lastCalc); document.getElementById('redModal').classList.remove('hidden'); }
+function closeRedModal() { document.getElementById('redModal').classList.add('hidden'); }
+function selectObjection(el, val) {
+  const g = el.closest('.toggle-group');
+  g.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  state.objections[g.dataset.obj] = val;
+}
+
+/* ══════════ Saisie ══════════ */
+document.querySelectorAll('.toggle-group[data-key]').forEach(g => {
+  g.querySelectorAll('.toggle-btn').forEach(b => {
+    b.tabIndex = 0;
+    const pick = () => {
+      g.querySelectorAll('.toggle-btn').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      state[g.dataset.key] = b.dataset.val;
+      if (g.dataset.key === 'coemp') {
+        document.getElementById('coempBlock').classList.toggle('hidden', b.dataset.val !== 'oui');
+        if (b.dataset.val === 'oui' && state.adultes < 2) { state.adultes = 2; setText('adultesVal', 2); }
+      }
+      render();
+    };
+    b.addEventListener('click', pick);
+    b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+  });
+});
+document.querySelectorAll('input[data-amount]').forEach(el => {
+  el.addEventListener('input', () => { const d = el.value.replace(/[^\d]/g, ''); if (el.value !== d) el.value = d; render(); });
+  el.addEventListener('blur', () => { const d = el.value.replace(/[^\d]/g, ''); el.value = d ? Number(d).toLocaleString('fr-FR') : ''; });
+  el.addEventListener('focus', () => { el.value = el.value.replace(/[^\d]/g, ''); });
+});
+function step(key, d) {
+  const min = key === 'adultes' ? 1 : 0;
+  state[key] = Math.max(min, Math.min(key === 'adultes' ? 4 : 8, state[key] + d));
+  setText(key + 'Val', state[key]);
+  render();
+}
+function onSlider() {
+  state.duree = parseInt(document.getElementById('dureeRange').value, 10);
+  state.taux = parseFloat(document.getElementById('tauxRange').value);
+  setText('dureeVal', state.duree);
+  setText('tauxVal', state.taux.toFixed(2).replace('.', ','));
+  render();
+}
+function onEmailInput() {
+  // Nouvelle adresse : la demande de pièces peut être renvoyée (comme le mail d'info LMNP)
+  if (state.pieces && document.getElementById('email').value.trim() !== state.pieces.email) state.pieces = null;
+  render();
+}
+
+/* ══════════ Utilitaires ══════════ */
+function fmt(n) { return (n == null || isNaN(n)) ? '—' : Math.round(n).toLocaleString('fr-FR') + ' €'; }
+function fmtPct(n) { return n.toFixed(1).replace('.', ',') + ' %'; }
+function zoneLbl(z) { return z === 'A' ? 'A/A bis' : z; }
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
+function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+function getAmount(id) { const el = document.getElementById(id); return el ? (parseFloat((el.value || '').replace(/[^\d]/g, '')) || 0) : 0; }
+function setText(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+function setHtml(id, v) { const el = document.getElementById(id); if (el) el.innerHTML = v; }
+function formatPhone(input) {
+  let v = input.value.replace(/\D/g, '').slice(0, 10);
+  const m = v.match(/^(\d{0,2})(\d{0,2})(\d{0,2})(\d{0,2})(\d{0,2})$/);
+  if (m) input.value = [m[1], m[2], m[3], m[4], m[5]].filter(Boolean).join(' ');
+}
+function markError(id) {
+  const el = document.getElementById(id); if (!el) return;
+  el.closest('.field')?.classList.add('has-error');
+  el.addEventListener('input', () => el.closest('.field')?.classList.remove('has-error'), { once:true });
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show' + (type ? ' t-' + type : '');
+  clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove('show'), 3800);
+}
+function validateContact() {
+  if (!document.getElementById('prenom').value.trim()) { markError('prenom'); showToast('Le prénom est requis', 'error'); return false; }
+  if (!document.getElementById('nom').value.trim()) { markError('nom'); showToast('Le nom est requis', 'error'); return false; }
+  if (document.getElementById('tel').value.replace(/\D/g, '').length < 10) { markError('tel'); showToast('Le téléphone est requis', 'error'); return false; }
+  return true;
+}
+
+/* ══════════ Payload ══════════ */
+const NIVEAU = { green:'vert', orange:'orange', red:'rouge', neutral:'incomplet' };
+function collectPayload(r) {
+  const g = id => document.getElementById(id)?.value.trim() || '';
+  const s = r.s, p = r.ptz, round = n => Math.round(n);
+  return {
+    source:'sn-qualification-ptz', timestamp:new Date().toISOString(),
+    prospect:{ prenom:g('prenom'), nom:g('nom'), telephone:g('tel'), email:g('email') },
+    projet:{ prix:s.prix, apport:s.apport, zone:s.zone, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
+    revenus:{ statut:state.statut, revenu_net_mensuel:s.revenu1, coemprunteur:state.coemp === 'oui' ? { statut:g('statut2'), revenu_net_mensuel:s.revenu2 } : null,
+      autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, annee_rfr:ANNEE_RFR },
+    charges:{ credits_en_cours:s.credits, loyer_actuel:s.loyer },
+    hypotheses:{ taux_pct:state.taux, duree_ans:s.duree, assurance_pct:ASSURANCE * 100, endettement_max_pct:MAX_DTI * 100 },
+    ptz: p.ok ? { eligible:true, tranche:p.tranche, quotite_pct:Math.round(p.quotite * 100), base_retenue:round(p.base), plafond_operation:p.plafondOp,
+        plafond_ressources:p.plafondRessources, ressources_retenues:round(p.ressourcesRetenues), montant:round(r.montantPtz),
+        differe_ans:p.differe, remboursement_ans:p.duree, mensualite_apres_differe:round(r.mensPtz) }
+      : { eligible:false, raison:p.raison || 'Non calculé (informations incomplètes)' },
+    financement:{ pret_bancaire:round(r.pret), mensualite_bancaire:round(r.mensBanque), mensualite_periode1:round(r.mensP1), mensualite_periode2:round(r.mensP2),
+      lissage_necessaire:r.lissage, mensualite_lissee:r.lissage ? round(r.mensLissee) : null,
+      taux_endettement_pct:Math.round(r.tde1 * 10) / 10, taux_endettement_apres_differe_pct:Math.round(r.tde2 * 10) / 10,
+      taux_endettement_lisse_pct:r.lissage ? Math.round(r.tdeLisse * 10) / 10 : null,
+      capacite_bancaire:round(r.capBancaire), capacite_totale:round(r.capTotale), ecart:round(r.ecart),
+      reste_a_vivre:round(r.rav), reste_a_vivre_minimum:r.ravMin, saut_de_charge:r.saut === null ? null : round(r.saut) },
+    analyse:{ niveau:NIVEAU[r.level], label:r.verdict, type_rouge:r.level === 'red' ? r.redType : null, raisons:r.reasons, qualifie:r.qualifie },
+    objections:r.level === 'red' ? { ...state.objections } : null,
+    pieces:state.pieces ? { demandees:true, ...state.pieces } : { demandees:false },
+    notes:g('notes'),
+  };
+}
+
+/* ══════════ Sortie 1 : demande de pièces au prospect ══════════
+ * Garde-fou : recalcul complet au moment du clic (jamais l'état affiché), refus si le dossier n'est pas vert/orange.
+ * Le workflow n8n refait le même contrôle côté serveur avant d'écrire au prospect. */
+async function demanderPieces() {
+  if (state.sending || state.pieces) return;
+  const r = compute();
+  if (!r.qualifie) { render(); showToast('Dossier non qualifié : la demande de pièces est bloquée', 'error'); return; }
+  if (!validateContact()) return;
+  const email = document.getElementById('email').value.trim();
+  if (!isEmail(email)) { markError('email'); showToast('Un email valide du prospect est requis', 'error'); return; }
+
+  state.sending = true;
+  const btn = document.getElementById('btnPieces');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Envoi…';
+  try {
+    const res = await fetch(PIECES_WH, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(collectPayload(r)) });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || out.success !== true) throw new Error(out.message || 'HTTP ' + res.status);   // seul un succès explicite de n8n vaut envoi
+    state.pieces = { email, date:new Date().toISOString(), niveau:NIVEAU[r.level] };
+    showToast('Demande de pièces envoyée à ' + email, 'success');
+  } catch (e) {
+    showToast('Échec de l\'envoi : ' + e.message, 'error');
+  } finally {
+    state.sending = false;
+    render();
+  }
+}
+
+/* ══════════ Sortie 2 : fiche de synthèse à l'équipe ══════════
+ * N'écrit jamais au prospect. Un dossier rouge reste transmissible (traçabilité), avec son statut « pièces non demandées ». */
+async function submitForm() {
+  if (state.sending) return;
+  if (!validateContact()) return;
+  const r = compute();
+  if (r.s.prix < 10000) { markError('prix'); showToast('Saisissez le prix du bien', 'error'); return; }
+  if (r.qualifie && !state.pieces && !confirm('Le dossier est qualifié mais les pièces n\'ont pas été demandées au prospect.\n\nEnvoyer la fiche quand même ?')) return;
+
+  state.sending = true;
+  const btn = document.getElementById('btnSubmit');
+  btn.innerHTML = '<div class="spinner"></div> Envoi…'; btn.disabled = true;
+  try {
+    const res = await fetch(FICHE_WH, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(collectPayload(r)) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    setText('successSub', state.pieces
+      ? `Fiche transmise à l'équipe. Pièces demandées à ${state.pieces.email}.`
+      : 'Fiche transmise à l\'équipe. Aucune demande de pièces envoyée au prospect.');
+    document.getElementById('formScreen').style.display = 'none';
+    document.getElementById('navFixed').style.display = 'none';
+    closeRedModal();
+    document.getElementById('successScreen').classList.add('active');
+  } catch (e) {
+    showToast('Erreur lors de l\'envoi de la fiche (' + e.message + ')', 'error');
+  } finally {
+    state.sending = false;
+    btn.innerHTML = 'Envoyer la fiche de synthèse'; btn.disabled = false;
+  }
+}
+
+function resetForm() {
+  document.getElementById('formScreen').style.display = '';
+  document.getElementById('navFixed').style.display = '';
+  document.getElementById('successScreen').classList.remove('active');
+  document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
+  Object.assign(state, { zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
+    objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
+  document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
+  document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('coempBlock').classList.add('hidden');
+  setText('adultesVal', 1); setText('enfantsVal', 0);
+  document.getElementById('dureeRange').value = 25; document.getElementById('tauxRange').value = 3.2; onSlider();
+  closeRedModal();
+  window.scrollTo(0, 0);
+}
+
+setText('rfrYear', ANNEE_RFR);
+render();
+</script>
+</body>
+</html>
