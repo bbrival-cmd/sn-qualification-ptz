@@ -268,7 +268,7 @@
     <div class="modal-gap" id="modalGap"></div>
     <div class="modal-q">
       <label>Peut-on augmenter l'apport ?</label>
-      <span class="field-hint">Épargne, donation familiale, déblocage d'épargne salariale…</span>
+      <span class="field-hint"><span id="modalEpargne"></span>Épargne non mobilisée, donation familiale, déblocage d'épargne salariale…</span>
       <div class="toggle-group" data-obj="augmenter_apport">
         <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
         <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
@@ -406,13 +406,24 @@
         <span class="field-hint">Prix TTC du logement (parking compris), hors frais de notaire</span>
       </div>
       <div class="field">
-        <label for="apport">Apport personnel</label>
+        <label for="epargne">Épargne disponible</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="epargne" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Livrets, PEL, assurance-vie… (hors épargne bloquée)</span>
+      </div>
+    </div>
+    <div class="fg fg-2 mt">
+      <div class="field">
+        <label for="apport">Apport mobilisé sur le projet</label>
         <div class="amount-wrap">
           <input type="text" inputmode="numeric" id="apport" placeholder="0" data-amount>
           <span class="amount-suffix">€</span>
         </div>
-        <span class="field-hint">Épargne que le prospect met dans l'opération</span>
+        <span class="field-hint" id="apportHint">Reprend l'épargne disponible, à ajuster si le prospect garde une réserve</span>
       </div>
+      <div class="info-box" id="epargneInfo">Les banques apprécient une épargne de précaution conservée après l'achat (souvent 3 à 6 mois de mensualités).</div>
     </div>
     <div class="fg fg-2 mt">
       <div class="field">
@@ -482,12 +493,30 @@
         <span class="field-hint">Net avant impôt, primes régulières comprises</span>
       </div>
       <div class="field">
-        <label for="autresRevenus">Autres revenus mensuels</label>
+        <label for="caf">Allocations CAF mensuelles</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="caf" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Allocations familiales, complément familial… (certaines banques n'en retiennent qu'une partie)</span>
+      </div>
+    </div>
+    <div class="fg fg-2 mt">
+      <div class="field">
+        <label for="pensionRecue">Pension alimentaire reçue</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="pensionRecue" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Montant mensuel fixé par jugement ou convention</span>
+      </div>
+      <div class="field">
+        <label for="autresRevenus">Autres revenus réguliers</label>
         <div class="amount-wrap">
           <input type="text" inputmode="numeric" id="autresRevenus" placeholder="0" data-amount>
           <span class="amount-suffix">€</span>
         </div>
-        <span class="field-hint">Allocations CAF, pension alimentaire reçue…</span>
+        <span class="field-hint">Revenus locatifs, pension de retraite d'un co-occupant…</span>
       </div>
     </div>
     <div class="field mt">
@@ -536,8 +565,18 @@
           <input type="text" inputmode="numeric" id="credits" placeholder="0" data-amount>
           <span class="amount-suffix">€</span>
         </div>
-        <span class="field-hint">Auto, conso, LOA… + pension alimentaire versée</span>
+        <span class="field-hint">Auto, conso, LOA, crédit étudiant… (hors crédit soldé avant l'achat)</span>
       </div>
+      <div class="field">
+        <label for="pensionVersee">Pension alimentaire versée</label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="pensionVersee" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint">Comptée comme une charge dans l'endettement</span>
+      </div>
+    </div>
+    <div class="fg fg-2 mt">
       <div class="field">
         <label for="loyer">Loyer actuel</label>
         <div class="amount-wrap">
@@ -637,12 +676,18 @@ function ptzPour(prix, s) {
 // Lit le formulaire et calcule tout : la même fonction sert à l'affichage, au voyant ET aux garde-fous d'envoi.
 function compute() {
   const s = {
-    prix:getAmount('prix'), apport:getAmount('apport'), zone:state.zone, type:state.type, primo:state.primo,
+    prix:getAmount('prix'), apport:getAmount('apport'), epargne:getAmount('epargne'), zone:state.zone, type:state.type, primo:state.primo,
     adultes:state.adultes, enfants:state.enfants, personnes:state.adultes + state.enfants,
-    revenu1:getAmount('revenu1'), revenu2:state.coemp === 'oui' ? getAmount('revenu2') : 0, autres:getAmount('autresRevenus'),
-    rfr:getAmount('rfr'), credits:getAmount('credits'), loyer:getAmount('loyer'), duree:state.duree, taux:state.taux / 100,
+    revenu1:getAmount('revenu1'), revenu2:state.coemp === 'oui' ? getAmount('revenu2') : 0,
+    caf:getAmount('caf'), pensionRecue:getAmount('pensionRecue'), autres:getAmount('autresRevenus'),
+    rfr:getAmount('rfr'), creditsSeuls:getAmount('credits'), pensionVersee:getAmount('pensionVersee'), loyer:getAmount('loyer'),
+    duree:state.duree, taux:state.taux / 100,
   };
-  s.revenus = s.revenu1 + s.revenu2 + s.autres;
+  // Revenus retenus par la banque : salaires + allocations CAF + pension reçue + autres revenus réguliers
+  s.revenus = s.revenu1 + s.revenu2 + s.caf + s.pensionRecue + s.autres;
+  // Charges retenues dans l'endettement : crédits en cours + pension alimentaire versée (le loyer disparaît après l'achat)
+  s.credits = s.creditsSeuls + s.pensionVersee;
+  s.epargneRestante = s.epargne > 0 ? s.epargne - s.apport : null;
   const r = { s, missing:[] };
 
   if (s.prix < 10000) r.missing.push('le prix du bien');
@@ -714,7 +759,7 @@ function compute() {
     reasons.push('À renseigner : ' + r.missing.join(', '));
   } else if (mensMax <= 0 || capTotale < s.prix * SEUIL_NEGATIF) {
     level = 'red'; redType = 'negatif'; verdict = 'Dossier NÉGATIF : non finançable en l\'état';
-    if (mensMax <= 0) reasons.push(`Les crédits en cours (${fmt(s.credits)}/mois) atteignent déjà 35 % des revenus`);
+    if (mensMax <= 0) reasons.push(`Les crédits et pensions versées (${fmt(s.credits)}/mois) atteignent déjà 35 % des revenus`);
     else reasons.push(`Capacité totale ${fmt(capTotale)} : il manque ${fmt(r.ecart)} (plus de 20 % du prix)`);
     reasons.push('Écart trop important pour un simple ajustement : revoir le projet en profondeur');
   } else if (t1 > MAX_DTI * 100 || (lissage && tL > MAX_DTI * 100)) {
@@ -732,6 +777,7 @@ function compute() {
     if (rav < ravMin) reasons.push(`Reste à vivre ${fmt(rav)}, sous le minimum indicatif de ${fmt(ravMin)} pour ce foyer`);
   }
   if (!r.missing.length && !ptz.ok && ptz.raison) reasons.push('Pas de PTZ : ' + ptz.raison);
+  if (!r.missing.length && s.epargneRestante !== null && s.epargneRestante < 0) reasons.push(`Apport (${fmt(s.apport)}) supérieur à l'épargne déclarée (${fmt(s.epargne)}) : à vérifier`);
   Object.assign(r, { level, verdict, reasons, redType, qualifie: level === 'green' || level === 'orange' });
   return r;
 }
@@ -797,8 +843,12 @@ function render() {
   if (r.saut !== null) setText('fSaut', (r.saut >= 0 ? '+' : '−') + fmt(Math.abs(r.saut)) + '/mois');
 
   // Aides de saisie
+  const apportHint = document.getElementById('apportHint');
+  if (s.epargneRestante === null) { apportHint.textContent = 'Reprend l\'épargne disponible, à ajuster si le prospect garde une réserve'; apportHint.classList.remove('warn'); }
+  else if (s.epargneRestante < 0) { apportHint.textContent = `⚠️ Dépasse l'épargne déclarée de ${fmt(-s.epargneRestante)}`; apportHint.classList.add('warn'); }
+  else { apportHint.textContent = `Épargne restante après l'apport : ${fmt(s.epargneRestante)}`; apportHint.classList.remove('warn'); }
   const rfrHint = document.getElementById('rfrHint');
-  const salAnnuel = (s.revenu1 + s.revenu2) * 12;
+  const salAnnuel = (s.revenu1 + s.revenu2 + s.pensionRecue) * 12;   // revenus imposables (les allocations CAF ne le sont pas)
   if (s.rfr > 0 && salAnnuel > 0 && (s.rfr > salAnnuel * 1.4 || s.rfr < salAnnuel * 0.5)) {
     rfrHint.textContent = `⚠️ Écart important avec les salaires déclarés (≈ ${fmt(salAnnuel * 0.9)}/an attendu) : faire relire la ligne sur l'avis`;
     rfrHint.classList.add('warn');
@@ -854,6 +904,11 @@ function updateRedModal(r) {
   setText('modalGap', r.capBancaire <= 0
     ? 'Les crédits en cours saturent déjà la capacité : un rachat ou un solde de crédit serait un préalable.'
     : `Écart à combler : ${fmt(r.ecart)} (apport supplémentaire ou baisse de prix équivalente).`);
+  updateModalEpargne(r);
+}
+function updateModalEpargne(r) {
+  const er = r.s.epargneRestante;
+  setText('modalEpargne', er > 0 ? `Encore ${fmt(er)} d'épargne non mobilisée. ` : er === 0 ? 'Toute l\'épargne déclarée est déjà dans l\'apport. ' : '');
 }
 function openRedModal() { if (state.lastCalc) updateRedModal(state.lastCalc); document.getElementById('redModal').classList.remove('hidden'); }
 function closeRedModal() { document.getElementById('redModal').classList.add('hidden'); }
@@ -886,6 +941,14 @@ document.querySelectorAll('input[data-amount]').forEach(el => {
   el.addEventListener('input', () => { const d = el.value.replace(/[^\d]/g, ''); if (el.value !== d) el.value = d; render(); });
   el.addEventListener('blur', () => { const d = el.value.replace(/[^\d]/g, ''); el.value = d ? Number(d).toLocaleString('fr-FR') : ''; });
   el.addEventListener('focus', () => { el.value = el.value.replace(/[^\d]/g, ''); });
+});
+// L'épargne se reporte dans l'apport tant que l'agent n'a pas modifié l'apport lui-même
+document.getElementById('apport').addEventListener('input', e => { state.apportManuel = e.target.value !== ''; });
+document.getElementById('epargne').addEventListener('input', e => {
+  if (state.apportManuel) return;
+  const a = document.getElementById('apport'); a.value = e.target.value.replace(/[^\d]/g, '');
+  a.value = a.value ? Number(a.value).toLocaleString('fr-FR') : '';
+  render();
 });
 function step(key, d) {
   const min = key === 'adultes' ? 1 : 0;
@@ -946,10 +1009,10 @@ function collectPayload(r) {
   return {
     source:'sn-qualification-ptz', timestamp:new Date().toISOString(),
     prospect:{ prenom:g('prenom'), nom:g('nom'), telephone:g('tel'), email:g('email') },
-    projet:{ prix:s.prix, apport:s.apport, zone:s.zone, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
+    projet:{ prix:s.prix, apport:s.apport, epargne_disponible:s.epargne || null, epargne_restante:s.epargneRestante, zone:s.zone, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
     revenus:{ statut:state.statut, revenu_net_mensuel:s.revenu1, coemprunteur:state.coemp === 'oui' ? { statut:g('statut2'), revenu_net_mensuel:s.revenu2 } : null,
-      autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, annee_rfr:ANNEE_RFR },
-    charges:{ credits_en_cours:s.credits, loyer_actuel:s.loyer },
+      caf:s.caf, pension_recue:s.pensionRecue, autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, annee_rfr:ANNEE_RFR },
+    charges:{ credits_en_cours:s.creditsSeuls, pension_versee:s.pensionVersee, total_charges:s.credits, loyer_actuel:s.loyer },
     hypotheses:{ taux_pct:state.taux, duree_ans:s.duree, assurance_pct:ASSURANCE * 100, endettement_max_pct:MAX_DTI * 100 },
     ptz: p.ok ? { eligible:true, tranche:p.tranche, quotite_pct:Math.round(p.quotite * 100), base_retenue:round(p.base), plafond_operation:p.plafondOp,
         plafond_ressources:p.plafondRessources, ressources_retenues:round(p.ressourcesRetenues), montant:round(r.montantPtz),
@@ -1031,7 +1094,7 @@ function resetForm() {
   document.getElementById('navFixed').style.display = '';
   document.getElementById('successScreen').classList.remove('active');
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
-  Object.assign(state, { zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
+  Object.assign(state, { apportManuel:false, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
   document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
   document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
