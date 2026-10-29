@@ -153,7 +153,7 @@
   .mt{ margin-top:13px; }
 
   .field{ display:flex; flex-direction:column; gap:5px; }
-  .field>label, #coempQ>label{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.4px; }
+  .field>label, #coempQ>label, #coupleQ>label{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.4px; }
   .req{ color:var(--accent); }
   .field input, .field select, .field textarea{
     width:100%; padding:10px 13px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
@@ -470,6 +470,13 @@
           <div><span class="field-hint">Enfants / personnes à charge</span>
             <div class="stepper"><button type="button" onclick="step('enfants',-1)" aria-label="Moins d'enfants">−</button><span id="enfantsVal">0</span><button type="button" onclick="step('enfants',1)" aria-label="Plus d'enfants">+</button></div></div>
         </div>
+        <div class="hidden" id="coupleQ" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
+          <label>Situation du couple <span class="req">*</span></label>
+          <div class="toggle-group" data-key="couple">
+            <div class="toggle-btn" data-val="marie">Marié / pacsé</div>
+            <div class="toggle-btn" data-val="separe">Non marié</div>
+          </div>
+        </div>
         <div class="hidden" id="coempQ" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
           <label>Co-emprunteur ?</label>
           <div class="toggle-group" data-key="coemp">
@@ -559,14 +566,22 @@
     <div class="divider"></div>
     <div class="fg fg-2">
       <div class="field">
-        <label for="rfr">Revenu fiscal de référence <span id="rfrYear"></span> <span class="req" id="rfrReq">*</span></label>
+        <label for="rfr"><span id="rfrLabel">Revenu fiscal de référence</span> <span class="req" id="rfrReq">*</span></label>
         <div class="amount-wrap">
           <input type="text" inputmode="numeric" id="rfr" placeholder="0" data-amount>
           <span class="amount-suffix">€</span>
         </div>
         <span class="field-hint" id="rfrHint"></span>
       </div>
-      <div class="info-box" id="rfrInfo">Le PTZ se calcule sur le <b>revenu fiscal de référence</b>, pas sur le salaire actuel. Si les futurs occupants ont des avis d'imposition séparés, additionnez les RFR.</div>
+      <div class="field hidden" id="rfr2Field">
+        <label for="rfr2">RFR <span id="rfr2Year"></span> — avis du 2<sup>e</sup> adulte <span class="req">*</span></label>
+        <div class="amount-wrap">
+          <input type="text" inputmode="numeric" id="rfr2" placeholder="0" data-amount>
+          <span class="amount-suffix">€</span>
+        </div>
+        <span class="field-hint" id="rfr2Hint"></span>
+      </div>
+      <div class="info-box" id="rfrInfo" style="grid-column:1/-1;">Le PTZ se calcule sur le <b>revenu fiscal de référence</b>, pas sur le salaire actuel : on additionne les RFR de <b>tous</b> les futurs occupants. Couple marié ou pacsé = un seul avis commun ; non marié = un avis chacun.</div>
     </div>
   </div>
 
@@ -666,7 +681,7 @@ const ANNEE = new Date().getFullYear();
 const ANNEE_RFR = ANNEE - 2;
 
 const state = {
-  zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0,
+  zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0,
   duree:25, taux:3.2, lastLevel:null, objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null },
   pieces:null,   // { email, date, niveau } une fois la demande envoyée
   sending:false,
@@ -696,11 +711,12 @@ function compute() {
     adultes:state.adultes, enfants:state.enfants, personnes:state.adultes + state.enfants,
     revenu1:getAmount('revenu1'), revenu2:state.coemp === 'oui' ? getAmount('revenu2') : 0,
     caf:getAmount('caf'), pensionRecue:getAmount('pensionRecue'), autres:getAmount('autresRevenus'),
-    rfr:getAmount('rfr'), creditsSeuls:getAmount('credits'), pensionVersee:getAmount('pensionVersee'), loyer:getAmount('loyer'),
+    rfr1:getAmount('rfr'), rfr2:state.adultes >= 2 && state.couple === 'separe' ? getAmount('rfr2') : 0, creditsSeuls:getAmount('credits'), pensionVersee:getAmount('pensionVersee'), loyer:getAmount('loyer'),
     duree:state.duree, taux:state.taux / 100,
   };
   // Revenus retenus par la banque : salaires + allocations CAF + pension reçue + autres revenus réguliers
-  s.revenus = s.revenu1 + s.revenu2 + s.caf + s.pensionRecue + s.autres;
+  s.revenus = s.revenu1 + s.revenu2 + s.caf + s.pensionRecue + s.autres;   // revenus des 2 co-emprunteurs additionnés
+  s.rfr = s.rfr1 + s.rfr2;                                                // RFR de tous les occupants additionnés (PTZ)
   // Charges retenues dans l'endettement : crédits en cours + pension alimentaire versée (le loyer disparaît après l'achat)
   s.credits = s.creditsSeuls + s.pensionVersee;
   s.epargneRestante = s.epargne > 0 ? s.epargne - s.apport : null;
@@ -710,7 +726,9 @@ function compute() {
   if (!s.zone) r.missing.push('la ville du bien');
   if (!s.primo) r.missing.push('la primo-accession');
   if (s.revenu1 + s.revenu2 <= 0) r.missing.push('le revenu net mensuel');
-  if (s.primo && s.primo !== 'non' && s.rfr <= 0) r.missing.push('le revenu fiscal de référence');
+  if (state.adultes >= 2 && !state.couple) r.missing.push('la situation du couple');
+  if (s.primo && s.primo !== 'non' && s.rfr1 <= 0) r.missing.push('le revenu fiscal de référence');
+  if (s.primo && s.primo !== 'non' && state.adultes >= 2 && state.couple === 'separe' && s.rfr2 <= 0) r.missing.push('le RFR du 2e adulte');
 
   // PTZ (calculable dès que prix + zone + primo + RFR sont connus)
   let ptz = { ok:false, raison:null };
@@ -868,14 +886,20 @@ function render() {
   else if (s.epargneRestante < 0) { apportHint.textContent = `⚠️ Dépasse l'épargne déclarée de ${fmt(-s.epargneRestante)}`; apportHint.classList.add('warn'); }
   else { apportHint.textContent = `Épargne restante après l'apport : ${fmt(s.epargneRestante)}`; apportHint.classList.remove('warn'); }
   const rfrHint = document.getElementById('rfrHint');
-  const salAnnuel = (s.revenu1 + s.revenu2 + s.pensionRecue) * 12;   // revenus imposables (les allocations CAF ne le sont pas)
-  if (s.rfr > 0 && salAnnuel > 0 && (s.rfr > salAnnuel * 1.4 || s.rfr < salAnnuel * 0.5)) {
+  const deuxAvis = state.adultes >= 2 && state.couple === 'separe';
+  // revenus imposables (les allocations CAF ne le sont pas) ; avec 2 avis, on ne compare que l'avis de l'emprunteur principal
+  const salAnnuel = (deuxAvis ? s.revenu1 : s.revenu1 + s.revenu2 + s.pensionRecue) * 12;
+  const rfrCompare = deuxAvis ? s.rfr1 : s.rfr;
+  if (rfrCompare > 0 && salAnnuel > 0 && (rfrCompare > salAnnuel * 1.4 || rfrCompare < salAnnuel * 0.5)) {
     rfrHint.textContent = `⚠️ Écart important avec les salaires déclarés (≈ ${fmt(salAnnuel * 0.9)}/an attendu) : faire relire la ligne sur l'avis`;
     rfrHint.classList.add('warn');
   } else {
     rfrHint.textContent = `Ligne « Revenu fiscal de référence » de l'avis d'imposition ${ANNEE_RFR + 1} (revenus ${ANNEE_RFR})`;
     rfrHint.classList.remove('warn');
   }
+  document.getElementById('rfr2Field').classList.toggle('hidden', !deuxAvis);
+  setText('rfrLabel', deuxAvis ? `RFR ${ANNEE_RFR} — avis de l'emprunteur` : state.adultes >= 2 && state.couple === 'marie' ? `RFR ${ANNEE_RFR} commun du couple` : `Revenu fiscal de référence ${ANNEE_RFR}`);
+  setText('rfr2Hint', deuxAvis && s.rfr1 > 0 && s.rfr2 > 0 ? `Total retenu pour le PTZ : ${fmt(s.rfr)}` : `Avis d'imposition ${ANNEE_RFR + 1} (revenus ${ANNEE_RFR}) de l'autre adulte`);
   const noPtz = state.primo === 'non';
   document.getElementById('rfrReq').classList.toggle('hidden', noPtz);
   setText('primoHint', state.primo === 'exception'
@@ -1032,6 +1056,7 @@ function step(key, d) {
 function majCoemp() {
   const deux = state.adultes >= 2;
   document.getElementById('coempQ').classList.toggle('hidden', !deux);
+  document.getElementById('coupleQ').classList.toggle('hidden', !deux);
   if (!deux && state.coemp === 'oui') {
     state.coemp = 'non';
     document.querySelectorAll('.toggle-group[data-key="coemp"] .toggle-btn').forEach(b => b.classList.toggle('sel', b.dataset.val === 'non'));
@@ -1097,7 +1122,7 @@ function collectPayload(r) {
     projet:{ prix:s.prix, apport:s.apport, epargne_disponible:s.epargne || null, epargne_restante:s.epargneRestante, zone:s.zone, zone_label:zoneLabel(), zone_source:state.zoneSource || null,
       commune:state.commune ? { nom:state.commune.nom, code_insee:state.commune.code, departement:state.commune.dep } : null, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
     revenus:{ statut:state.statut, revenu_net_mensuel:s.revenu1, coemprunteur:state.coemp === 'oui' ? { statut:g('statut2'), revenu_net_mensuel:s.revenu2 } : null,
-      caf:s.caf, pension_recue:s.pensionRecue, autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, annee_rfr:ANNEE_RFR },
+      caf:s.caf, pension_recue:s.pensionRecue, autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, rfr_detail:s.rfr2 > 0 ? [s.rfr1, s.rfr2] : null, situation_couple:state.adultes >= 2 ? state.couple : 'seul', annee_rfr:ANNEE_RFR },
     charges:{ credits_en_cours:s.creditsSeuls, pension_versee:s.pensionVersee, total_charges:s.credits, loyer_actuel:s.loyer },
     hypotheses:{ taux_pct:state.taux, duree_ans:s.duree, assurance_pct:ASSURANCE * 100, endettement_max_pct:MAX_DTI * 100 },
     ptz: p.ok ? { eligible:true, tranche:p.tranche, quotite_pct:Math.round(p.quotite * 100), base_retenue:round(p.base), plafond_operation:p.plafondOp,
@@ -1181,18 +1206,18 @@ function resetForm() {
   document.getElementById('successScreen').classList.remove('active');
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
   villeIn.value = ''; fermerVilles(); document.getElementById('zoneManuelle').open = false;
-  Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
+  Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
   document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
   document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
-  document.getElementById('coempBlock').classList.add('hidden'); document.getElementById('coempQ').classList.add('hidden');
+  document.getElementById('coempBlock').classList.add('hidden'); document.getElementById('coempQ').classList.add('hidden'); document.getElementById('coupleQ').classList.add('hidden'); document.getElementById('rfr2Field').classList.add('hidden');
   setText('adultesVal', 1); setText('enfantsVal', 0);
   document.getElementById('dureeRange').value = 25; document.getElementById('tauxRange').value = 3.2; onSlider();
   closeRedModal();
   window.scrollTo(0, 0);
 }
 
-setText('rfrYear', ANNEE_RFR);
+setText('rfr2Year', ANNEE_RFR);
 render();
 </script>
 </body>
