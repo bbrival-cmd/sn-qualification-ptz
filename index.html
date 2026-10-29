@@ -184,6 +184,16 @@
   .stepper button:hover{ border-color:var(--accent); }
   .stepper span{ min-width:26px; text-align:center; font-family:var(--font-mono); font-weight:700; font-size:16px; }
 
+  .commune-field{ position:relative; }
+  .sugg{ position:absolute; left:0; right:0; top:66px; z-index:30; background:var(--surface); border:1.5px solid var(--accent); border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); overflow:hidden; }
+  .sugg-item{ display:flex; justify-content:space-between; gap:10px; width:100%; padding:10px 13px; border:none; background:none; text-align:left; font-family:var(--font-ui); font-size:13.5px; font-weight:600; color:var(--ink); cursor:pointer; }
+  .sugg-item:hover, .sugg-item:focus{ background:var(--accent-soft); outline:none; }
+  .sugg-item span{ color:var(--ink-faint); font-weight:600; font-size:12px; white-space:nowrap; }
+  .sugg-empty{ padding:10px 13px; font-size:12.5px; color:var(--ink-muted); }
+  .zone-ok{ color:var(--good-ink); font-weight:700; }
+  .zone-manuelle{ margin-top:6px; font-size:11.5px; color:var(--ink-faint); }
+  .zone-manuelle summary{ cursor:pointer; }
+  .zone-manuelle .toggle-group{ margin-top:8px; }
   .divider{ height:1px; background:var(--border); margin:15px 0; }
   .info-box{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 14px; font-size:12px; color:var(--ink-muted); line-height:1.5; }
 
@@ -426,15 +436,20 @@
       <div class="info-box" id="epargneInfo">Les banques apprécient une épargne de précaution conservée après l'achat (souvent 3 à 6 mois de mensualités).</div>
     </div>
     <div class="fg fg-2 mt">
-      <div class="field">
-        <label>Zone PTZ du bien <span class="req">*</span></label>
-        <div class="toggle-group" data-key="zone">
-          <div class="toggle-btn" data-val="A">A / A bis</div>
-          <div class="toggle-btn" data-val="B1">B1</div>
-          <div class="toggle-btn" data-val="B2">B2</div>
-          <div class="toggle-btn" data-val="C">C</div>
-        </div>
-        <span class="field-hint">Indiquée sur la fiche du programme</span>
+      <div class="field commune-field">
+        <label for="ville">Ville du bien <span class="req">*</span></label>
+        <input type="text" id="ville" placeholder="Ville ou code postal" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="villeList" aria-expanded="false">
+        <div class="sugg hidden" id="villeList" role="listbox"></div>
+        <span class="field-hint" id="zoneHint"></span>
+        <details class="zone-manuelle" id="zoneManuelle">
+          <summary>Choisir la zone à la main</summary>
+          <div class="toggle-group" data-key="zone">
+            <div class="toggle-btn" data-val="A">A / A bis</div>
+            <div class="toggle-btn" data-val="B1">B1</div>
+            <div class="toggle-btn" data-val="B2">B2</div>
+            <div class="toggle-btn" data-val="C">C</div>
+          </div>
+        </details>
       </div>
       <div class="field">
         <label>Type de logement</label>
@@ -634,6 +649,7 @@
 </div>
 
 <script src="assets/ptz-baremes.js"></script>
+<script src="assets/zonage-abc.js"></script>
 <script>
 /* Barèmes PTZ : assets/ptz-baremes.js (partagés avec le mémo) */
 const MAX_DTI = 0.35;          // HCSF, assurance comprise
@@ -663,7 +679,7 @@ function ptzPour(prix, s) {
   if (s.primo === 'non') return { ok:false, raison:"Non primo-accédant : propriétaire de sa résidence principale ces 2 dernières années" };
   const n = Math.min(s.personnes, 8), z = s.zone;
   const plafond = PTZ.ressources[z][n - 1];
-  if (s.rfr > plafond) return { ok:false, raison:`RFR au-dessus du plafond PTZ (${fmt(plafond)} en zone ${zoneLbl(z)} pour ${n} pers.)`, plafondRessources:plafond };
+  if (s.rfr > plafond) return { ok:false, raison:`RFR au-dessus du plafond PTZ (${fmt(plafond)} en zone ${zoneLabel()} pour ${n} pers.)`, plafondRessources:plafond };
   const ressources = Math.max(s.rfr, prix / 9);          // revenus retenus : au moins le coût de l'opération ÷ 9
   const parPart = ressources / PTZ.coef[n - 1];
   const t = PTZ.tranches[z].findIndex(lim => parPart <= lim);
@@ -691,7 +707,7 @@ function compute() {
   const r = { s, missing:[] };
 
   if (s.prix < 10000) r.missing.push('le prix du bien');
-  if (!s.zone) r.missing.push('la zone PTZ');
+  if (!s.zone) r.missing.push('la ville du bien');
   if (!s.primo) r.missing.push('la primo-accession');
   if (s.revenu1 + s.revenu2 <= 0) r.missing.push('le revenu net mensuel');
   if (s.primo && s.primo !== 'non' && s.rfr <= 0) r.missing.push('le revenu fiscal de référence');
@@ -825,7 +841,7 @@ function render() {
   const blk = document.getElementById('ptzBlock');
   if (p.ok) {
     blk.innerHTML = `<div><span class="ptz-amount mono">${fmt(r.montantPtz)}</span><span class="ptz-chip">Tranche ${p.tranche} · ${Math.round(p.quotite * 100)} %</span></div>
-      <div class="ptz-detail">${Math.round(p.quotite * 100)} % × ${fmt(p.base)} ${p.base < s.prix ? `(prix plafonné à ${fmt(p.plafondOp)} en zone ${zoneLbl(s.zone)} pour ${Math.min(s.personnes, 5)}${s.personnes >= 5 ? '+' : ''} pers.)` : '(prix du bien, sous le plafond)'}${r.montantPtz < p.base * p.quotite - 1 ?'<br>Réduit : le PTZ ne peut pas dépasser le prêt bancaire.' : ''}<br>
+      <div class="ptz-detail">${Math.round(p.quotite * 100)} % × ${fmt(p.base)} ${p.base < s.prix ? `(prix plafonné à ${fmt(p.plafondOp)} en zone ${zoneLabel()} pour ${Math.min(s.personnes, 5)}${s.personnes >= 5 ? '+' : ''} pers.)` : '(prix du bien, sous le plafond)'}${r.montantPtz < p.base * p.quotite - 1 ?'<br>Réduit : le PTZ ne peut pas dépasser le prêt bancaire.' : ''}<br>
       Plafond de ressources : ${fmt(p.plafondRessources)} · RFR saisi : ${fmt(s.rfr)}</div>
       <div class="ptz-script">${p.differe
         ? `À dire au prospect : <b>0 € de PTZ à rembourser pendant ${p.differe} ans</b>, puis <b>${fmt(r.mensPtz)}/mois pendant ${p.duree} ans</b>. Ce n'est pas un cadeau : c'est un prêt sans intérêt, avec un différé.`
@@ -843,6 +859,10 @@ function render() {
   if (r.saut !== null) setText('fSaut', (r.saut >= 0 ? '+' : '−') + fmt(Math.abs(r.saut)) + '/mois');
 
   // Aides de saisie
+  setHtml('zoneHint', state.zoneSource === 'commune' && state.commune
+    ? `<span class="zone-ok">Zone PTZ ${esc(state.commune.zoneLabel)}</span> · ${esc(state.commune.nom)} (${esc(state.commune.dep)}), zonage officiel au ${ZONAGE.date}`
+    : state.zoneSource === 'manuel' && state.zone ? `Zone choisie à la main : <b>${esc(zoneLbl(state.zone))}</b>`
+    : 'Tapez la ville du programme : la zone PTZ est trouvée automatiquement');
   const apportHint = document.getElementById('apportHint');
   if (s.epargneRestante === null) { apportHint.textContent = 'Reprend l\'épargne disponible, à ajuster si le prospect garde une réserve'; apportHint.classList.remove('warn'); }
   else if (s.epargneRestante < 0) { apportHint.textContent = `⚠️ Dépasse l'épargne déclarée de ${fmt(-s.epargneRestante)}`; apportHint.classList.add('warn'); }
@@ -927,6 +947,7 @@ document.querySelectorAll('.toggle-group[data-key]').forEach(g => {
       g.querySelectorAll('.toggle-btn').forEach(x => x.classList.remove('sel'));
       b.classList.add('sel');
       state[g.dataset.key] = b.dataset.val;
+      if (g.dataset.key === 'zone') state.zoneSource = 'manuel';
       if (g.dataset.key === 'coemp') {
         document.getElementById('coempBlock').classList.toggle('hidden', b.dataset.val !== 'oui');
         if (b.dataset.val === 'oui' && state.adultes < 2) { state.adultes = 2; setText('adultesVal', 2); }
@@ -950,6 +971,57 @@ document.getElementById('epargne').addEventListener('input', e => {
   a.value = a.value ? Number(a.value).toLocaleString('fr-FR') : '';
   render();
 });
+/* Ville du bien → commune officielle (geo.api.gouv.fr) → zone PTZ (zonage ABC officiel embarqué) */
+const villeIn = document.getElementById('ville'), villeList = document.getElementById('villeList');
+let villeTimer = null, villeItems = [], villeReq = 0;
+function fermerVilles() { villeList.classList.add('hidden'); villeIn.setAttribute('aria-expanded', 'false'); }
+function majToggleZone() { document.querySelectorAll('.toggle-group[data-key="zone"] .toggle-btn').forEach(b => b.classList.toggle('sel', b.dataset.val === state.zone)); }
+villeIn.addEventListener('input', () => {
+  state.commune = null;
+  if (state.zoneSource === 'commune') { state.zone = null; state.zoneSource = null; majToggleZone(); }
+  render();
+  clearTimeout(villeTimer);
+  const q = villeIn.value.trim();
+  if (q.length < 2) { fermerVilles(); return; }
+  villeTimer = setTimeout(() => chercherVilles(q), 200);
+});
+async function chercherVilles(q) {
+  const id = ++villeReq;
+  const F = 'fields=code,nom,codeDepartement';
+  const url = /^\d{5}$/.test(q) ? `https://geo.api.gouv.fr/communes?codePostal=${q}&${F}`
+    : /^\d+$/.test(q) ? null : `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(q)}&${F}&boost=population&limit=8`;
+  if (!url) { fermerVilles(); return; }
+  try {
+    const res = await fetch(url);
+    const d = await res.json();
+    if (id !== villeReq) return;
+    villeItems = (Array.isArray(d) ? d : []).slice(0, 8);
+    villeList.innerHTML = villeItems.length
+      ? villeItems.map((c, i) => `<button type="button" class="sugg-item" role="option" data-i="${i}">${esc(c.nom)} <span>${esc(c.codeDepartement)} · zone ${ZLABEL[ZONAGE.zoneDe(c.code)]}</span></button>`).join('')
+      : '<div class="sugg-empty">Aucune commune trouvée</div>';
+  } catch (e) {
+    if (id !== villeReq) return;
+    villeItems = [];
+    villeList.innerHTML = '<div class="sugg-empty">Recherche indisponible : choisissez la zone à la main ci-dessous.</div>';
+    document.getElementById('zoneManuelle').open = true;
+  }
+  villeList.classList.remove('hidden'); villeIn.setAttribute('aria-expanded', 'true');
+}
+function choisirVille(c) {
+  const z = ZONAGE.zoneDe(c.code);
+  state.commune = { code:c.code, nom:c.nom, dep:c.codeDepartement, zoneLabel:ZLABEL[z] };
+  state.zone = z === 'Abis' ? 'A' : z;   // A bis et A ont les mêmes barèmes PTZ
+  state.zoneSource = 'commune';
+  villeIn.value = `${c.nom} (${c.codeDepartement})`;
+  fermerVilles(); majToggleZone(); render();
+}
+villeList.addEventListener('mousedown', e => { const b = e.target.closest('.sugg-item'); if (b) { e.preventDefault(); choisirVille(villeItems[+b.dataset.i]); } });
+villeIn.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && villeItems.length && !villeList.classList.contains('hidden')) { e.preventDefault(); choisirVille(villeItems[0]); }
+  if (e.key === 'Escape') fermerVilles();
+});
+villeIn.addEventListener('blur', () => setTimeout(fermerVilles, 150));
+
 function step(key, d) {
   const min = key === 'adultes' ? 1 : 0;
   state[key] = Math.max(min, Math.min(key === 'adultes' ? 4 : 8, state[key] + d));
@@ -973,6 +1045,9 @@ function onEmailInput() {
 function fmt(n) { return (n == null || isNaN(n)) ? '—' : Math.round(n).toLocaleString('fr-FR') + ' €'; }
 function fmtPct(n) { return n.toFixed(1).replace('.', ',') + ' %'; }
 function zoneLbl(z) { return z === 'A' ? 'A/A bis' : z; }
+const ZLABEL = { Abis:'A bis', A:'A', B1:'B1', B2:'B2', C:'C' };
+// Libellé de la zone retenue : celui du zonage officiel si la commune a été choisie, sinon celui de la saisie manuelle
+function zoneLabel() { return state.zoneSource === 'commune' && state.commune ? state.commune.zoneLabel : zoneLbl(state.zone); }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
 function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
 function getAmount(id) { const el = document.getElementById(id); return el ? (parseFloat((el.value || '').replace(/[^\d]/g, '')) || 0) : 0; }
@@ -1009,7 +1084,8 @@ function collectPayload(r) {
   return {
     source:'sn-qualification-ptz', timestamp:new Date().toISOString(),
     prospect:{ prenom:g('prenom'), nom:g('nom'), telephone:g('tel'), email:g('email') },
-    projet:{ prix:s.prix, apport:s.apport, epargne_disponible:s.epargne || null, epargne_restante:s.epargneRestante, zone:s.zone, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
+    projet:{ prix:s.prix, apport:s.apport, epargne_disponible:s.epargne || null, epargne_restante:s.epargneRestante, zone:s.zone, zone_label:zoneLabel(), zone_source:state.zoneSource || null,
+      commune:state.commune ? { nom:state.commune.nom, code_insee:state.commune.code, departement:state.commune.dep } : null, type_logement:s.type, adultes:s.adultes, enfants:s.enfants, personnes:s.personnes, primo_accedant:s.primo },
     revenus:{ statut:state.statut, revenu_net_mensuel:s.revenu1, coemprunteur:state.coemp === 'oui' ? { statut:g('statut2'), revenu_net_mensuel:s.revenu2 } : null,
       caf:s.caf, pension_recue:s.pensionRecue, autres_revenus:s.autres, total_mensuel:s.revenus, rfr:s.rfr, annee_rfr:ANNEE_RFR },
     charges:{ credits_en_cours:s.creditsSeuls, pension_versee:s.pensionVersee, total_charges:s.credits, loyer_actuel:s.loyer },
@@ -1094,7 +1170,8 @@ function resetForm() {
   document.getElementById('navFixed').style.display = '';
   document.getElementById('successScreen').classList.remove('active');
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
-  Object.assign(state, { apportManuel:false, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
+  villeIn.value = ''; fermerVilles(); document.getElementById('zoneManuelle').open = false;
+  Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
   document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
   document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
