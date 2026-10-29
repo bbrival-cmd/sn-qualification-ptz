@@ -153,7 +153,7 @@
   .mt{ margin-top:13px; }
 
   .field{ display:flex; flex-direction:column; gap:5px; }
-  .field>label{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.4px; }
+  .field>label, #coempQ>label{ font-size:10.5px; font-weight:700; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.4px; }
   .req{ color:var(--accent); }
   .field input, .field select, .field textarea{
     width:100%; padding:10px 13px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
@@ -470,6 +470,13 @@
           <div><span class="field-hint">Enfants / personnes à charge</span>
             <div class="stepper"><button type="button" onclick="step('enfants',-1)" aria-label="Moins d'enfants">−</button><span id="enfantsVal">0</span><button type="button" onclick="step('enfants',1)" aria-label="Plus d'enfants">+</button></div></div>
         </div>
+        <div class="hidden" id="coempQ" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
+          <label>Co-emprunteur ?</label>
+          <div class="toggle-group" data-key="coemp">
+            <div class="toggle-btn sel" data-val="non">Non</div>
+            <div class="toggle-btn" data-val="oui">Oui</div>
+          </div>
+        </div>
         <span class="field-hint">Sert au PTZ (plafonds) et au reste à vivre</span>
       </div>
       <div class="field">
@@ -532,13 +539,6 @@
           <span class="amount-suffix">€</span>
         </div>
         <span class="field-hint">Revenus locatifs, pension de retraite d'un co-occupant…</span>
-      </div>
-    </div>
-    <div class="field mt">
-      <label>Co-emprunteur ?</label>
-      <div class="toggle-group" data-key="coemp">
-        <div class="toggle-btn sel" data-val="non">Non</div>
-        <div class="toggle-btn" data-val="oui">Oui</div>
       </div>
     </div>
     <div class="fg fg-2 mt hidden" id="coempBlock">
@@ -950,7 +950,6 @@ document.querySelectorAll('.toggle-group[data-key]').forEach(g => {
       if (g.dataset.key === 'zone') state.zoneSource = 'manuel';
       if (g.dataset.key === 'coemp') {
         document.getElementById('coempBlock').classList.toggle('hidden', b.dataset.val !== 'oui');
-        if (b.dataset.val === 'oui' && state.adultes < 2) { state.adultes = 2; setText('adultesVal', 2); }
       }
       render();
     };
@@ -1026,7 +1025,18 @@ function step(key, d) {
   const min = key === 'adultes' ? 1 : 0;
   state[key] = Math.max(min, Math.min(key === 'adultes' ? 4 : 8, state[key] + d));
   setText(key + 'Val', state[key]);
+  if (key === 'adultes') majCoemp();
   render();
+}
+// La question co-emprunteur n'apparaît qu'à partir de 2 adultes ; revenir à 1 adulte l'annule
+function majCoemp() {
+  const deux = state.adultes >= 2;
+  document.getElementById('coempQ').classList.toggle('hidden', !deux);
+  if (!deux && state.coemp === 'oui') {
+    state.coemp = 'non';
+    document.querySelectorAll('.toggle-group[data-key="coemp"] .toggle-btn').forEach(b => b.classList.toggle('sel', b.dataset.val === 'non'));
+    document.getElementById('coempBlock').classList.add('hidden');
+  }
 }
 function onSlider() {
   state.duree = parseInt(document.getElementById('dureeRange').value, 10);
@@ -1175,7 +1185,7 @@ function resetForm() {
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
   document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
   document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
-  document.getElementById('coempBlock').classList.add('hidden');
+  document.getElementById('coempBlock').classList.add('hidden'); document.getElementById('coempQ').classList.add('hidden');
   setText('adultesVal', 1); setText('enfantsVal', 0);
   document.getElementById('dureeRange').value = 25; document.getElementById('tauxRange').value = 3.2; onSlider();
   closeRedModal();
