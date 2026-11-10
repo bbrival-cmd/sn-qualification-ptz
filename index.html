@@ -410,7 +410,7 @@
       <div class="field">
         <label for="prix">Prix du bien neuf <span class="req">*</span></label>
         <div class="amount-wrap">
-          <input type="text" inputmode="numeric" id="prix" placeholder="240 000" data-amount>
+          <input type="text" inputmode="numeric" id="prix" value="250 000" placeholder="250 000" data-amount>
           <span class="amount-suffix">€</span>
         </div>
         <span class="field-hint">Prix TTC du logement (parking compris), hors frais de notaire</span>
@@ -1205,6 +1205,7 @@ function resetForm() {
   document.getElementById('navFixed').style.display = '';
   document.getElementById('successScreen').classList.remove('active');
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
+  document.getElementById('prix').value = '250 000';   // prix par défaut, à ajuster si le prospect a un programme précis
   villeIn.value = ''; fermerVilles(); document.getElementById('zoneManuelle').open = false;
   Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
