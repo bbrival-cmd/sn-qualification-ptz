@@ -405,16 +405,8 @@
 
   <!-- ═══ ② PROJET ═══ -->
   <div class="card">
-    <div class="card-label"><span class="step-num-badge">2</span>🏠 Projet résidence principale neuve</div>
+    <div class="card-label"><span class="step-num-badge">2</span>🏠 Projet résidence principale neuve <span class="card-label-tag">Bien à 250 000 €</span></div>
     <div class="fg fg-2">
-      <div class="field">
-        <label for="prix">Prix du bien neuf <span class="req">*</span></label>
-        <div class="amount-wrap">
-          <input type="text" inputmode="numeric" id="prix" value="250 000" placeholder="250 000" data-amount>
-          <span class="amount-suffix">€</span>
-        </div>
-        <span class="field-hint">Prix TTC du logement (parking compris), hors frais de notaire</span>
-      </div>
       <div class="field">
         <label for="epargne">Épargne disponible</label>
         <div class="amount-wrap">
@@ -423,8 +415,6 @@
         </div>
         <span class="field-hint">Livrets, PEL, assurance-vie… (hors épargne bloquée)</span>
       </div>
-    </div>
-    <div class="fg fg-2 mt">
       <div class="field">
         <label for="apport">Apport mobilisé sur le projet</label>
         <div class="amount-wrap">
@@ -433,6 +423,8 @@
         </div>
         <span class="field-hint" id="apportHint">Reprend l'épargne disponible, à ajuster si le prospect garde une réserve</span>
       </div>
+    </div>
+    <div class="fg mt">
       <div class="info-box" id="epargneInfo">Les banques apprécient une épargne de précaution conservée après l'achat (souvent 3 à 6 mois de mensualités).</div>
     </div>
     <div class="fg fg-2 mt">
@@ -667,6 +659,7 @@
 <script src="assets/zonage-abc.js"></script>
 <script>
 /* Barèmes PTZ : assets/ptz-baremes.js (partagés avec le mémo) */
+const PRIX_BIEN = 250000;   // prix fixe du logement neuf (décision 10/11/2026 : le télépro ne le saisit plus)
 const MAX_DTI = 0.35;          // HCSF, assurance comprise
 const ASSURANCE = 0.0030;      // assurance emprunteur ≈ 0,30 %/an du capital
 const RAV_ADULTE = 800;        // reste à vivre minimum indicatif par adulte (€/mois)
@@ -707,7 +700,7 @@ function ptzPour(prix, s) {
 // Lit le formulaire et calcule tout : la même fonction sert à l'affichage, au voyant ET aux garde-fous d'envoi.
 function compute() {
   const s = {
-    prix:getAmount('prix'), apport:getAmount('apport'), epargne:getAmount('epargne'), zone:state.zone, type:state.type, primo:state.primo,
+    prix:PRIX_BIEN, apport:getAmount('apport'), epargne:getAmount('epargne'), zone:state.zone, type:state.type, primo:state.primo,
     adultes:state.adultes, enfants:state.enfants, personnes:state.adultes + state.enfants,
     revenu1:getAmount('revenu1'), revenu2:state.coemp === 'oui' ? getAmount('revenu2') : 0,
     caf:getAmount('caf'), pensionRecue:getAmount('pensionRecue'), autres:getAmount('autresRevenus'),
@@ -1176,7 +1169,6 @@ async function submitForm() {
   if (state.sending) return;
   if (!validateContact()) return;
   const r = compute();
-  if (r.s.prix < 10000) { markError('prix'); showToast('Saisissez le prix du bien', 'error'); return; }
   if (r.qualifie && !state.pieces && !confirm('Le dossier est qualifié mais les pièces n\'ont pas été demandées au prospect.\n\nEnvoyer la fiche quand même ?')) return;
 
   state.sending = true;
@@ -1205,7 +1197,6 @@ function resetForm() {
   document.getElementById('navFixed').style.display = '';
   document.getElementById('successScreen').classList.remove('active');
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
-  document.getElementById('prix').value = '250 000';   // prix par défaut, à ajuster si le prospect a un programme précis
   villeIn.value = ''; fermerVilles(); document.getElementById('zoneManuelle').open = false;
   Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
     objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
