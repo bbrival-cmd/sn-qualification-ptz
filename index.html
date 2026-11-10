@@ -268,7 +268,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- Panneau flottant non bloquant : leviers de rattrapage d'un dossier rouge -->
+<!-- Panneau flottant non bloquant : levier de rattrapage d'un dossier rouge (l'apport, seul levier : prix fixe) -->
 <div class="modal-overlay hidden" id="redModal">
   <div class="modal-card">
     <button class="modal-close-x" onclick="closeRedModal()" aria-label="Fermer">✕</button>
@@ -280,22 +280,6 @@
       <label>Peut-on augmenter l'apport ?</label>
       <span class="field-hint"><span id="modalEpargne"></span>Épargne non mobilisée, donation familiale, déblocage d'épargne salariale…</span>
       <div class="toggle-group" data-obj="augmenter_apport">
-        <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
-        <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
-      </div>
-    </div>
-    <div class="modal-q">
-      <label>Le prix du bien est-il négociable ?</label>
-      <span class="field-hint">Remise promoteur, frais de notaire offerts, typologie plus petite…</span>
-      <div class="toggle-group" data-obj="prix_negociable">
-        <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
-        <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
-      </div>
-    </div>
-    <div class="modal-q">
-      <label>Peut-on revoir la zone ou le programme ?</label>
-      <span class="field-hint">Commune voisine moins chère, autre programme, maison ↔ appartement…</span>
-      <div class="toggle-group" data-obj="revoir_programme">
         <div class="toggle-btn" onclick="selectObjection(this,'oui')">Oui</div>
         <div class="toggle-btn" onclick="selectObjection(this,'non')">Non</div>
       </div>
@@ -675,7 +659,7 @@ const ANNEE_RFR = ANNEE - 2;
 
 const state = {
   zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0,
-  duree:25, taux:3.2, lastLevel:null, objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null },
+  duree:25, taux:3.2, lastLevel:null, objections:{ augmenter_apport:null },
   pieces:null,   // { email, date, niveau } une fois la demande envoyée
   sending:false,
 };
@@ -821,7 +805,7 @@ function render() {
   signal.className = 'signal s-' + r.level + (signal.classList.contains('pulse') ? ' pulse' : '');
   setText('signalVerdict', r.verdict);
   document.getElementById('signalReasons').innerHTML = r.reasons.map(x => `<div class="signal-reason">${esc(x)}</div>`).join('')
-    + (r.level === 'red' ? '<button class="signal-reopen" onclick="openRedModal()">📋 Leviers de rattrapage (apport / prix / programme)</button>' : '');
+    + (r.level === 'red' ? '<button class="signal-reopen" onclick="openRedModal()">📋 Levier de rattrapage : l\'apport</button>' : '');
   setText('sCapacite', s.revenus > 0 ? fmt(r.capTotale) : '— €');
   setText('sPrix', s.prix ? fmt(s.prix) : '— €');
   setText('sPtz', p.ok ? fmt(r.montantPtz) : (p.raison ? '0 €' : '— €'));
@@ -932,15 +916,15 @@ function updateRedModal(r) {
   if (r.redType === 'negatif') {
     tag.textContent = 'NÉGATIF'; tag.className = 'modal-tag modal-tag-negatif';
     setText('modalTitle', 'Non finançable en l\'état');
-    setText('modalSub', 'L\'écart est important. Avant de clore l\'appel, vérifiez ces leviers avec le prospect :');
+    setText('modalSub', 'L\'écart est important. Avant de clore l\'appel, vérifiez avec le prospect s\'il peut apporter davantage :');
   } else {
     tag.textContent = 'ROUGE'; tag.className = 'modal-tag modal-tag-rouge';
     setText('modalTitle', 'Dossier à retravailler');
-    setText('modalSub', 'L\'endettement dépasse 35 %. Avant de clore l\'appel, vérifiez ces leviers avec le prospect :');
+    setText('modalSub', 'L\'endettement dépasse 35 %. Avant de clore l\'appel, vérifiez avec le prospect s\'il peut apporter davantage :');
   }
   setText('modalGap', r.capBancaire <= 0
     ? 'Les crédits en cours saturent déjà la capacité : un rachat ou un solde de crédit serait un préalable.'
-    : `Écart à combler : ${fmt(r.ecart)} (apport supplémentaire ou baisse de prix équivalente).`);
+    : `Apport supplémentaire nécessaire : ${fmt(r.ecart)}.`);
   updateModalEpargne(r);
 }
 function updateModalEpargne(r) {
@@ -1199,7 +1183,7 @@ function resetForm() {
   document.querySelectorAll('#formScreen input[type="text"],#formScreen input[type="tel"],#formScreen input[type="email"],textarea').forEach(el => el.value = '');
   villeIn.value = ''; fermerVilles(); document.getElementById('zoneManuelle').open = false;
   Object.assign(state, { apportManuel:false, commune:null, zoneSource:null, zone:null, type:'appartement', primo:null, statut:'CDI', coemp:'non', couple:null, adultes:1, enfants:0, duree:25, taux:3.2, lastLevel:null, pieces:null,
-    objections:{ augmenter_apport:null, prix_negociable:null, revoir_programme:null } });
+    objections:{ augmenter_apport:null } });
   document.querySelectorAll('.toggle-group[data-key]').forEach(g => g.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('sel', state[g.dataset.key] === b.dataset.val)));
   document.querySelectorAll('.toggle-group[data-obj] .toggle-btn').forEach(b => b.classList.remove('sel'));
   document.getElementById('coempBlock').classList.add('hidden'); document.getElementById('coempQ').classList.add('hidden'); document.getElementById('coupleQ').classList.add('hidden'); document.getElementById('rfr2Field').classList.add('hidden');
